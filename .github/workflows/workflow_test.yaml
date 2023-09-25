@@ -5,4 +5,11 @@ jobs:
   echo:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'hello, world!' > workflow_test.txt
+      - run: echo 'hello, world!'
+  pwd-ls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print working directory
+        run: pwd
+      - name: list flies
+        run: ls -al
