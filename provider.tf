@@ -1,5 +1,6 @@
 provider "aws" {
-	access_key = "AKIAQ25632EPCL62BWQU"
-	secret_key = "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"
+    shared_config_files      = ["~/.aws/config"]
+	shared_credentials_files = ["~/.aws/credentials"]
+	profile					 = "jaesung.park"
 	region = var.region
 }
