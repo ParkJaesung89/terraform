@@ -11,5 +11,5 @@ terraform {
 
 provider "aws" {
   region  = var.region
-  profile = terraform.workspace
+  profile = jaesung.park
 }
