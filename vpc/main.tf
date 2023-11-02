@@ -130,7 +130,7 @@ resource "aws_internet_gateway" "this" {
 
   tags = merge(
     {
-      Name = format("%s-igw", var.name)
+      Name = format("%s-%s-igw", var.name, terraform.workspace)
     },
     var.tags
   )
