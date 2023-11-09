@@ -29,6 +29,9 @@ variable "public_subnets" {}
 # private subnet list
 variable "private_subnets" {}
 
+# lb subnet list
+variable "lb_subnets" {}
+
 # Tag
 variable "tags" {}
 
@@ -38,5 +41,13 @@ variable "public_ingress_rules" {}
 # private ingress IP list
 variable "private_ingress_rules" {}
 
+# lb ingress IP list
+variable "lb_ingress_rules" {}
+
 # DB port
 variable "db_port" {}
+
+# for lb_listener
+#variable "lb_arn" {}
+#variable "lb_listener_port" {}
+#variable "lb_listener_protocol" {}

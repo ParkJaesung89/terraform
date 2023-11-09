@@ -45,6 +45,17 @@ private_subnets = {
   }
 }
 
+lb_subnets = {
+  lb_sub_2a = {
+    zone = "ap-northeast-2a"
+    cidr = "10.10.100.0/24"
+  },
+  lb_sub_2c = {
+    zone = "ap-northeast-2c"
+    cidr = "10.10.110.0/24"
+  }
+}
+
 #####################
 # Instance setting
 
@@ -88,4 +99,23 @@ private_ingress_rules = [
   }
 ]
 
+lb_ingress_rules = [
+  {
+    from_port = "80",
+    to_port   = "80",
+    cidr      = "0.0.0.0/0"
+    desc      = "From lb http"
+  },
+  {
+    from_port = "443",
+    to_port   = "443",
+    cidr      = "0.0.0.0/0"
+    desc      = "From jsp httpd"
+  }
+]
+
 db_port = "3306"
+
+#lb_arn = aws_lb.jsp_lb.arn
+#lb_listener_port = 80
+#lb_listener_protocol = "HTTP"

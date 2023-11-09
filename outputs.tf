@@ -10,6 +10,10 @@ output "private_subnet_ids" {
   value = module.vpc.private_subnet_ids
 }
 
+output "lb_subnet_ids" {
+  value = module.vpc.lb_subnet_ids
+}
+
 output "nat_eip" {
   value = module.vpc.nat_eip
 }
