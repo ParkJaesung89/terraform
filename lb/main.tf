@@ -4,7 +4,7 @@
 resource "aws_lb" "jsp_lb" {
   name               = format("%s-%s-lb", var.name, terraform.workspace)
   load_balancer_type = "application"
-  internal           = false
+  internal           = false          # public
   security_groups    = [var.security_group_id_lb]
   subnets            = var.lb_subnets
 
