@@ -6,13 +6,13 @@ output "public_subnet_ids" {
   value = module.vpc.public_subnet_ids
 }
 
-output "private_subnet_ids" {
-  value = module.vpc.private_subnet_ids
-}
+#output "private_subnet_ids" {
+#  value = module.vpc.private_subnet_ids
+#}
 
-output "lb_subnet_ids" {
-  value = module.vpc.lb_subnet_ids
-}
+#output "lb_subnet_ids" {
+#  value = module.vpc.lb_subnet_ids
+#}
 
 output "nat_eip" {
   value = module.vpc.nat_eip
@@ -26,6 +26,6 @@ output "public_eip" {
   value = module.ec2.public_eip
 }
 
-output "ec2_private_id" {
-  value = module.ec2.ec2_private_id
-}
+#output "ec2_private_id" {
+#  value = module.ec2.ec2_private_id
+#}

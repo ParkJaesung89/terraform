@@ -9,7 +9,7 @@ variable "name" {}
 
 # EC2 instance type
 variable "ec2_type_public" {}
-variable "ec2_type_private" {}
+#variable "ec2_type_private" {}
 
 # EC2 volume size
 variable "ec2_volume_size" {}
@@ -27,10 +27,10 @@ variable "az_names" {}
 variable "public_subnets" {}
 
 # private subnet list
-variable "private_subnets" {}
+#variable "private_subnets" {}
 
 # lb subnet list
-variable "lb_subnets" {}
+#variable "lb_subnets" {}
 
 # Tag
 variable "tags" {}
@@ -39,10 +39,10 @@ variable "tags" {}
 variable "public_ingress_rules" {}
 
 # private ingress IP list
-variable "private_ingress_rules" {}
+#variable "private_ingress_rules" {}
 
 # lb ingress IP list
-variable "lb_ingress_rules" {}
+#variable "lb_ingress_rules" {}
 
 # DB port
 variable "db_port" {}
