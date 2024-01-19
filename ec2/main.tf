@@ -49,7 +49,7 @@ resource "aws_instance" "public1" {
   tags = merge(
     {
       Name = format(
-        "%s-public-server",
+        "%s-public-server2",
         var.name
       )
     },

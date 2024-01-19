@@ -55,6 +55,17 @@ public_subnets = {
 #    cidr = "10.10.110.0/24"
 #  }
 #}
+lb_subnets = [
+  {
+    zone = "ap-northeast-2a"
+    cidr = "10.10.100.0/24"
+  },
+  {
+    zone = "ap-northeast-2c"
+    cidr = "10.10.110.0/24"
+  }
+]
+
 
 #####################
 # Instance setting
@@ -99,23 +110,32 @@ public_ingress_rules = [
 #  }
 #]
 
-#lb_ingress_rules = [
-#  {
-#    from_port = "80",
-#    to_port   = "80",
-#    cidr      = "0.0.0.0/0"
-#    desc      = "From lb http"
-#  },
-#  {
-#    from_port = "443",
-#    to_port   = "443",
-#    cidr      = "0.0.0.0/0"
-#    desc      = "From jsp httpd"
-#  }
-#]
+lb_ingress_rules = [
+  {
+    from_port = "80",
+    to_port   = "80",
+    cidr      = "0.0.0.0/0"
+    desc      = "From lb http"
+  },
+  {
+    from_port = "443",
+    to_port   = "443",
+    cidr      = "0.0.0.0/0"
+    desc      = "From jsp httpd"
+  }
+]
 
 db_port = "3306"
 
-#lb_arn = aws_lb.jsp_lb.arn
-#lb_listener_port = 80
-#lb_listener_protocol = "HTTP"
+#lb_arn = "aws_lb.jsp_lb.arn"
+lb_listener_port = 80
+lb_listener_protocol = "HTTP"
+
+
+internal = false
+
+health_check_path  = "/health"
+health_check_timeout = 5
+health_check_interval = 30
+healthy_threshold = 2
+unhealthy_threshold = 2

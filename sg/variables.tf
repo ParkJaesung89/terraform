@@ -11,7 +11,7 @@ variable "public_ingress_rules" {}
 #variable "private_ingress_rules" {}
 
 # lb ingress IP list
-#variable "lb_ingress_rules" {}
+variable "lb_ingress_rules" {}
 
 # From module VPC
 variable "vpc_id" {}

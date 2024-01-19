@@ -58,26 +58,28 @@ resource "aws_subnet" "public" {
 #  )
 #}
 
-## lb subnet
-#resource "aws_subnet" "lb" {
-#  for_each          = var.lb_subnets
-#  vpc_id            = aws_vpc.vpc.id
-#  cidr_block        = each.value["cidr"]
-#  availability_zone = each.value["zone"]
-#  # AUTO-ASIGN LB IP
-#  map_public_ip_on_launch = true
-#
-#  tags = merge(
-#    {
-#      Name = format(
-#        "%s-lb-sub-%s",
-#        var.name,
-#        element(split("_", each.key), 2)
-#      )
-#    },
-#    var.tags,
-#  )
-#}
+# lb subnet
+resource "aws_subnet" "lb" {
+  #for_each          = var.lb_subnets
+  for_each = { for idx, subnet in var.lb_subnets : idx => subnet }      # var.lb_subnets의 리스트를 for_each에 사용하도록 맵 형식으로 변환
+
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value["cidr"]
+  availability_zone = each.value["zone"]
+  # AUTO-ASIGN LB IP
+  map_public_ip_on_launch = true
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-lb-sub-%s",
+        var.name,
+        element(split("_", each.key), 2)
+      )
+    },
+    var.tags,
+  )
+}
 
 ######################################
 ## Public route table and association
@@ -142,36 +144,38 @@ resource "aws_route_table_association" "public" {
 #  route_table_id = aws_route_table.private.id
 #}
 
-######################################
-## lb route table and association
+#####################################
+# lb route table and association
 
 # lb route table
-#resource "aws_route_table" "lb" {
-#  vpc_id     = aws_vpc.vpc.id
-#  depends_on = [aws_internet_gateway.this]
-#
-#  route {
-#    cidr_block = "0.0.0.0/0"
-#    gateway_id = aws_internet_gateway.this.id
-#  }
-#
-#  tags = merge(
-#    {
-#      Name = format(
-#        "%s-lb-rt",
-#        var.name,
-#      )
-#    },
-#    var.tags,
-#  )
-#}
+resource "aws_route_table" "lb" {
+  vpc_id     = aws_vpc.vpc.id
+  depends_on = [aws_internet_gateway.this]
 
-# lb route association
-#resource "aws_route_table_association" "lb" {
-#  for_each       = var.lb_subnets
-#  subnet_id      = aws_subnet.lb[each.key].id
-#  route_table_id = aws_route_table.lb.id
-#}
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.this.id
+  }
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-lb-rt",
+        var.name,
+      )
+    },
+    var.tags,
+  )
+}
+
+#lb route association
+resource "aws_route_table_association" "lb" {
+  #for_each       = var.lb_subnets
+  for_each = { for idx, subnet in var.lb_subnets : idx => subnet }
+
+  subnet_id      = aws_subnet.lb[each.key].id
+  route_table_id = aws_route_table.lb.id
+}
 
 
 

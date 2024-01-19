@@ -30,7 +30,7 @@ variable "public_subnets" {}
 #variable "private_subnets" {}
 
 # lb subnet list
-#variable "lb_subnets" {}
+variable "lb_subnets" {}
 
 # Tag
 variable "tags" {}
@@ -42,12 +42,55 @@ variable "public_ingress_rules" {}
 #variable "private_ingress_rules" {}
 
 # lb ingress IP list
-#variable "lb_ingress_rules" {}
+variable "lb_ingress_rules" {}
 
 # DB port
 variable "db_port" {}
 
+# for lb
+variable "internal" {
+  description = "Is the load balancer internal"
+  default     = false
+}
+variable "lb_listener_protocol" {
+  description = "The protocol for the listener"
+  default     = "http"
+}
+variable "lb_listener_port" {
+  description = "The port for the listener"
+  default     = 80
+}
+
+## for health check
+variable "health_check_path" {
+  description = "The health check path"
+  default     = "/health"
+}
+#
+variable "health_check_timeout" {
+  description = "The health check timeout"
+  default     = 5
+}
+#
+variable "health_check_interval" {
+  description = "The health check interval"
+  default     = 30
+}
+
+variable "healthy_threshold" {
+  description = "The healthy threshold"
+  default     = 2
+}
+
+variable "unhealthy_threshold" {
+  description = "The unhealthy threshold"
+  default     = 2
+}
+
 # for lb_listener
 #variable "lb_arn" {}
-#variable "lb_listener_port" {}
-#variable "lb_listener_protocol" {}
+
+## for dns
+#variable "domain_name" {
+#  description = "The domain name for the SSL certificate"
+#}

@@ -9,12 +9,11 @@ variable "ec2_type_public" {}
 variable "volume_size" {}
 variable "public_subnets" {}
 #variable "private_subnets" {}
-#variable "lb_subnets" {}
+variable "lb_subnets" {}
 
 #  From module VPC
 variable "pub_sub_ids" {}
 #variable "pri_sub_ids" {}
-#variable "lb_sub_ids" {}
 
 #  From module IAM
 variable "iam_instance_profile" {}

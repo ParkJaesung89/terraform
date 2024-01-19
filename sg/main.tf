@@ -100,30 +100,30 @@ resource "aws_security_group" "public" {
 
 
 # Load Balancer sg
-#resource "aws_security_group" "lb_sg" {
-#  name        = local.lb_sg
-#  description = "LB security group for ${var.name}"
-#  vpc_id      = var.vpc_id
-#
-#
-#  # inbound rule
-#  dynamic "ingress" {
-#    for_each = [for s in var.lb_ingress_rules : {
-#      from_port = s.from_port
-#      to_port   = s.to_port
-#      desc      = s.desc
-#      cidrs     = [s.cidr]
-#    }]
-#    content {
-#      from_port   = ingress.value.from_port
-#      to_port     = ingress.value.to_port
-#      cidr_blocks = ingress.value.cidrs
-#      protocol    = "tcp"
-#      description = ingress.value.desc
-#    }
-#  }
-#
-#  # self refer
+resource "aws_security_group" "lb_sg" {
+  name        = local.lb_sg
+  description = "LB security group for ${var.name}"
+  vpc_id      = var.vpc_id
+
+
+  # inbound rule
+  dynamic "ingress" {
+    for_each = [for s in var.lb_ingress_rules : {
+      from_port = s.from_port
+      to_port   = s.to_port
+      desc      = s.desc
+      cidrs     = [s.cidr]
+    }]
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      cidr_blocks = ingress.value.cidrs
+      protocol    = "tcp"
+      description = ingress.value.desc
+    }
+  }
+
+  # self refer
 #  ingress {
 #    from_port   = "0"
 #    to_port     = "0"
@@ -131,19 +131,27 @@ resource "aws_security_group" "public" {
 #    self        = true
 #    description = "Self Refer"
 #  }
-#
-#  # outbound rule
-#  egress {
-#    from_port   = 0
-#    to_port     = 0
-#    protocol    = "-1"
-#    cidr_blocks = ["0.0.0.0/0"]
-#  }
-#
-#  tags = merge(
-#    {
-#      Name = local.lb_sg
-#    },
-#    var.tags
-#  )
-#}
+
+  ingress {
+    from_port   = "80"
+    to_port     = "80"
+    protocol    = "tcp"
+    self        = true
+    description = "http"
+  }
+
+  # outbound rule
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(
+    {
+      Name = local.lb_sg
+    },
+    var.tags
+  )
+}
