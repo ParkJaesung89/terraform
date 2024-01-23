@@ -113,37 +113,37 @@ resource "aws_eip" "public" {
 ## Auto Scaling Group(ASG) setting
 
 # Launch Configuration
-#resource "aws_launch_configuration" "jsp_config" {
-#  name_prefix     = "jsp-lauchconfig-"
-#  image_id        = data.ubuntu.id
-#  instance_type   = var.ec2_type_public
-#  security_groups = [var.security_group_id_public]
-#
-#  user_data = file("${path.module}/user_data/user_data_public.sh")
-#
-#  root_block_device {
-#    volume_size           = 10
-#    volume_type           = "gp3"
-#    delete_on_termination = true
-#  }
-#
-#  # Required when using a launch configuration with an auto scaling group.
-#  lifecycle {
-#    create_before_destroy = true
-#  }
-#}
+resource "aws_launch_configuration" "jsp_config" {
+  name_prefix     = "jsp-lauchconfig-"
+  image_id        = data.aws_ami.ubuntu.id
+  instance_type   = var.ec2_type_public
+  security_groups = [var.security_group_id_public]
+
+  user_data = file("${path.module}/user_data/user_data_public.sh")
+
+  root_block_device {
+    volume_size           = 10
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
+  # Required when using a launch configuration with an auto scaling group.
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
 # Auto Scaling Group
-#resource "aws_autoscaling_group" "jsp_alb" {
-#  name                 = format("%s-%s-asg", var.name, terraform.workspace)
-#  launch_configuration = aws_launch_configuration.jsp_config.name
-#  vpc_zone_identifier  = [var.pub_sub_ids[0], var.pub_sub_ids[1]]
-#  min_size = 2
-#  max_size = 10
-#
-#  tag {
-#    key              = "Name"
-#    value            = format("%s-%s-alb", var.name, terraform.workspace)
-#    propagate_at_launch = true
-#  }
-#}
+resource "aws_autoscaling_group" "jsp_alb" {
+  name                 = format("%s-%s-asg", var.name, terraform.workspace)
+  launch_configuration = aws_launch_configuration.jsp_config.name
+  vpc_zone_identifier  = [var.pub_sub_ids[0], var.pub_sub_ids[1]]
+  min_size = 2
+  max_size = 10
+
+  tag {
+    key              = "Name"
+    value            = format("%s-%s-alb", var.name, terraform.workspace)
+    propagate_at_launch = true
+  }
+}

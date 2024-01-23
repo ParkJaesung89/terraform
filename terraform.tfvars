@@ -45,16 +45,6 @@ public_subnets = {
 #  }
 #}
 
-#lb_subnets = {
-#  lb_sub_2a = {
-#    zone = "ap-northeast-2a"
-#    cidr = "10.10.100.0/24"
-#  },
-#  lb_sub_2c = {
-#    zone = "ap-northeast-2c"
-#    cidr = "10.10.110.0/24"
-#  }
-#}
 lb_subnets = [
   {
     zone = "ap-northeast-2a"
@@ -127,7 +117,6 @@ lb_ingress_rules = [
 
 db_port = "3306"
 
-#lb_arn = "aws_lb.jsp_lb.arn"
 lb_listener_port = 80
 lb_listener_protocol = "HTTP"
 

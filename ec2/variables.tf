@@ -13,7 +13,6 @@ variable "lb_subnets" {}
 
 #  From module VPC
 variable "pub_sub_ids" {}
-#variable "pri_sub_ids" {}
 
 #  From module IAM
 variable "iam_instance_profile" {}

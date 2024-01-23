@@ -28,7 +28,7 @@ variable "lb_listener_port" {
 
 variable "lb_tg_protocol" {
   description = "The port for the lb target group"
-  default     = "http"
+  default     = "HTTP"
 }
 
 variable "lb_tg_port" {
