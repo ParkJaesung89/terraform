@@ -49,7 +49,8 @@ root 모듈에는 크게 4가지 중요 파일이 존재한다.
 =====================================================================
 
 # 현재 구성에서 terraform 사용
--현재 terraform 구성에서 backend는 s3로 사용중이며, s3의 tfstate 파일을 관리하기위하여 dynamoDB의 table 사용.
+- 현재 terraform 구성에서 backend는 s3로 사용중이며, s3의 tfstate 파일을 관리하기위하여 dynamoDB의 table 사용.
+- backend를 사용하지 않을 경우 init.tf 파일 주석처리, provider.tf 파일의 backend 설정 주석처리
 
 ## terraform으로 환경 및 리소스 생성 작업 순서
 1. terraform 사용하기 위한 디렉토리에 초기화 진행
