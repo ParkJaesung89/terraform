@@ -57,15 +57,21 @@ root 모듈에는 크게 4가지 중요 파일이 존재한다.
 ```bash
 terraform init
 ```
-2. tfstate 파일을 관리하기 위한 backend 구성을 위해서 우선 s3와 dynamodb 테이블이 구성되어 있어야됨.
+2. workspace 생성 및 적용
+```bash
+terraform workspace new {workspace name}
+terraform workspace select {workspace name}
+terraform workspace list
+```
+3. tfstate 파일을 관리하기 위한 backend 구성을 위해서 우선 s3와 dynamodb 테이블이 구성되어 있어야됨.
    - 'provider.tf' 파일에 backend 설정만 주석처리
-3. plan 으로 에러 없이 리소스들이 제대로 생성되는지 체크 후 apply로 생성
+4. plan 으로 에러 없이 리소스들이 제대로 생성되는지 체크 후 apply로 생성
 ```bash
 terraform plan
 terraform apply
 yes
 ```
-4. 모든 리소스 생성 완료 후 terraform backend 적용을 위해서 주석처리했던 backend 설정 주석 제거 후 적용
+5. 모든 리소스 생성 완료 후 terraform backend 적용을 위해서 주석처리했던 backend 설정 주석 제거 후 적용
 ```bash
 terraform init
 terraform plan
@@ -87,7 +93,7 @@ terraform destroy
 ```
 3. 추가로 backend 설정에 s3로 매핑되어있기 때문에 backend 주석처리 및 terraform 디렉토리안에 존재하고있는 tfstate 파일 직접 삭제 조치(terraform 명령을 통해 삭제했어도 기본 terraform 환경에 대한 상태값은 tfstate 값에 남아있음.)
 - 해당 조치가 가장 중요한 이유는 실제로는 삭제되어있으나 terraform에서 s3 backend 설정 값에대한 정보가 남아있기 때문에 s3를 찾을 수 없어서 에러발생하여 새로운 작업 등 명령어가 사용불가능함.
-
+- tfstate 파일 경로 : {terraform 디렉토리}/terraform.tfstate.d/{workspace}/terraform.tfstate
 =====================================================================
 
 [개인 미션] <!-- 추가해야 될 것들 -->
