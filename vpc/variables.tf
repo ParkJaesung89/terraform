@@ -17,8 +17,12 @@ variable "public_subnets" {}
 #variable "private_subnets" {}
 
 # lb subnet list
-variable "lb_subnets" {
-    type = list(map(string))        # lb_subnets 변수형식을 list로 변경하고 각요소가 map 형식이 되도록 설정
+variable "lb_subnets_web" {
+    type = list(map(string))        # lb_subnets_web 변수형식을 list로 변경하고 각요소가 map 형식이 되도록 설정
+}
+
+variable "lb_subnets_was" {
+    type = list(map(string))        # lb_subnets_was 변수형식을 list로 변경하고 각요소가 map 형식이 되도록 설정
 }
 
 # Tags

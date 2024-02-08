@@ -10,8 +10,12 @@ output "public_subnet_ids" {
 #  value = values(aws_subnet.private)[*].id
 #}
 
-output "lb_subnet_ids" {
-  value = values(aws_subnet.lb)[*].id
+output "web_lb_subnet_ids" {
+  value = values(aws_subnet.web_lb)[*].id
+}
+
+output "was_lb_subnet_ids" {
+  value = values(aws_subnet.was_lb)[*].id
 }
 
 output "nat_eip" {

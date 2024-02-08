@@ -19,6 +19,10 @@ output "security_group_id_public" {
 #  value       = module.alb.security_group_arn
 #}
 
-output "security_group_id_lb" {
-  value = aws_security_group.lb_sg.id
+output "security_group_id_lb_web" {
+  value = aws_security_group.web_lb_sg.id
+}
+
+output "security_group_id_lb_was" {
+  value = aws_security_group.was_lb_sg.id
 }

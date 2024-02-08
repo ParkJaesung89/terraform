@@ -30,67 +30,114 @@ variable "public_subnets" {}
 #variable "private_subnets" {}
 
 # lb subnet list
-variable "lb_subnets" {}
+variable "lb_subnets_web" {}
+variable "lb_subnets_was" {}
 
 # Tag
 variable "tags" {}
 
-# public ingress IP list
+# public sg rule IP list
 variable "public_ingress_rules" {}
+variable "public_egress_rules" {}
 
 # private ingress IP list
 #variable "private_ingress_rules" {}
 
-# lb ingress IP list
-variable "lb_ingress_rules" {}
+# web lb sg rule IP list
+variable "web_lb_ingress_rules" {}
+variable "web_lb_egress_rules" {}
+
+# web lb sg rule IP list
+variable "was_lb_ingress_rules" {}
+variable "was_lb_egress_rules" {}
 
 # DB port
-variable "db_port" {}
+#variable "db_port" {}
 
-# for lb
-variable "internal" {
+# for web_lb
+variable "internet_facing" {
   description = "Is the load balancer internal"
   default     = false
 }
-variable "lb_listener_protocol" {
+variable "web_lb_listener_protocol" {
   description = "The protocol for the listener"
-  default     = "http"
+  default     = "HTTP"
 }
-variable "lb_listener_port" {
+variable "web_lb_listener_port" {
   description = "The port for the listener"
   default     = 80
 }
 
-## for health check
-variable "health_check_path" {
+## for web_lb health check
+variable "web_health_check_path" {
   description = "The health check path"
   default     = "/health"
 }
 #
-variable "health_check_timeout" {
+variable "web_health_check_timeout" {
   description = "The health check timeout"
   default     = 5
 }
 #
-variable "health_check_interval" {
+variable "web_health_check_interval" {
   description = "The health check interval"
   default     = 30
 }
 
-variable "healthy_threshold" {
+variable "web_healthy_threshold" {
   description = "The healthy threshold"
   default     = 2
 }
 
-variable "unhealthy_threshold" {
+variable "web_unhealthy_threshold" {
   description = "The unhealthy threshold"
   default     = 2
 }
 
-# for lb_listener
-#variable "lb_arn" {}
 
 ## for dns
 #variable "domain_name" {
 #  description = "The domain name for the SSL certificate"
 #}
+
+
+
+# for was_lb
+variable "internal" {
+  description = "Is the load balancer internal"
+  default     = true
+}
+variable "was_lb_listener_protocol" {
+  description = "The protocol for the listener"
+  default     = "HTTP"
+}
+variable "was_lb_listener_port" {
+  description = "The port for the listener"
+  default     = 8080
+}
+
+## for web_lb health check
+variable "was_health_check_path" {
+  description = "The health check path"
+  default     = "/health"
+}
+#
+variable "was_health_check_timeout" {
+  description = "The health check timeout"
+  default     = 5
+}
+#
+variable "was_health_check_interval" {
+  description = "The health check interval"
+  default     = 30
+}
+
+variable "was_healthy_threshold" {
+  description = "The healthy threshold"
+  default     = 2
+}
+
+variable "was_unhealthy_threshold" {
+  description = "The unhealthy threshold"
+  default     = 2
+}

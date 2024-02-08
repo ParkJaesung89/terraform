@@ -4,8 +4,8 @@
 locals {
   public_sg  = format("%s-%s-sg", var.name, "public")
   private_sg = format("%s-%s-sg", var.name, "private")
-  lb_sg  = format("%s-%s-sg", var.name, "lb")
-
+  web_lb_sg  = format("%s-%s-sg", var.name, "web-lb")
+  was_lb_sg  = format("%s-%s-sg", var.name, "was-lb")
 }
 
 
@@ -33,22 +33,37 @@ resource "aws_security_group" "public" {
     }
   }
 
-  # self refer
-  ingress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
-    description = "Self Refer"
-  }
+  # inbound rule
+  #ingress {
+  #  from_port   = "22"
+  #  to_port     = "22"
+  #  protocol    = "tcp"
+  #  cidr_blocks = [211.115.223.215]
+  #  description = "access from office"
+  #}
 
   # outbound rule
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    dynamic "egress" {
+    for_each = [for s in var.public_egress_rules : {
+      from_port = s.from_port
+      to_port   = s.to_port
+      desc      = s.desc
+      cidrs     = [s.cidr]
+    }]
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      cidr_blocks = egress.value.cidrs
+      protocol    = "tcp"
+      description = egress.value.desc
+    }
   }
+  #egress {
+  #  from_port   = 0
+  #  to_port     = 0
+  #  protocol    = "-1"
+  #  cidr_blocks = ["0.0.0.0/0"]
+  #}
 
   tags = merge(
     {
@@ -99,16 +114,16 @@ resource "aws_security_group" "public" {
 #}
 
 
-# Load Balancer sg
-resource "aws_security_group" "lb_sg" {
-  name        = local.lb_sg
-  description = "LB security group for ${var.name}"
+# web Load Balancer sg
+resource "aws_security_group" "web_lb_sg" {
+  name        = local.web_lb_sg
+  description = "WEB LB security group for ${var.name}"
   vpc_id      = var.vpc_id
 
 
   # inbound rule
   dynamic "ingress" {
-    for_each = [for s in var.lb_ingress_rules : {
+    for_each = [for s in var.web_lb_ingress_rules : {
       from_port = s.from_port
       to_port   = s.to_port
       desc      = s.desc
@@ -124,33 +139,92 @@ resource "aws_security_group" "lb_sg" {
   }
 
   # self refer
-#  ingress {
-#    from_port   = "0"
-#    to_port     = "0"
-#    protocol    = "-1"
-#    self        = true
-#    description = "Self Refer"
-#  }
-
   ingress {
-    from_port   = "80"
-    to_port     = "80"
-    protocol    = "tcp"
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
     self        = true
-    description = "http"
+    description = "Self Refer"
   }
 
   # outbound rule
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "egress" {
+    for_each = [for s in var.web_lb_egress_rules : {
+      from_port = s.from_port
+      to_port   = s.to_port
+      desc      = s.desc
+      cidrs     = [s.cidr]
+    }]
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      cidr_blocks = egress.value.cidrs
+      protocol    = "tcp"
+      description = egress.value.desc
+    }
   }
 
   tags = merge(
     {
-      Name = local.lb_sg
+      Name = local.web_lb_sg
+    },
+    var.tags
+  )
+}
+
+
+# was Load Balancer sg
+resource "aws_security_group" "was_lb_sg" {
+  name        = local.was_lb_sg
+  description = "WAS LB security group for ${var.name}"
+  vpc_id      = var.vpc_id
+
+
+  # inbound rule
+  dynamic "ingress" {
+    for_each = [for s in var.was_lb_ingress_rules : {
+      from_port = s.from_port
+      to_port   = s.to_port
+      desc      = s.desc
+      cidrs     = [s.cidr]
+    }]
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      cidr_blocks = ingress.value.cidrs
+      protocol    = "tcp"
+      description = ingress.value.desc
+    }
+  }
+
+  # self refer
+  ingress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
+    self        = true
+    description = "Self Refer"
+  }
+
+  dynamic "egress" {
+    for_each = [for s in var.was_lb_egress_rules : {
+      from_port = s.from_port
+      to_port   = s.to_port
+      desc      = s.desc
+      cidrs     = [s.cidr]
+    }]
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      cidr_blocks = egress.value.cidrs
+      protocol    = "tcp"
+      description = egress.value.desc
+    }
+  }
+  
+  tags = merge(
+    {
+      Name = local.was_lb_sg
     },
     var.tags
   )
