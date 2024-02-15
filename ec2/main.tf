@@ -122,8 +122,8 @@ resource "aws_autoscaling_group" "jsp_alb" {
   target_group_arns = [var.web_lb_tg_arn]
 
   min_size = 2
-  max_size = 10
-  desired_capacity = 3
+  max_size = 2
+  desired_capacity = 2
 
   tag {
     key              = "Name"
