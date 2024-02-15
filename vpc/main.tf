@@ -39,24 +39,24 @@ resource "aws_subnet" "public" {
   )
 }
 
-## private subnet
-#resource "aws_subnet" "private" {
-#  for_each          = var.private_subnets
-#  vpc_id            = aws_vpc.vpc.id
-#  cidr_block        = each.value["cidr"]
-#  availability_zone = each.value["zone"]
-#
-#  tags = merge(
-#    {
-#      Name = format(
-#        "%s-pri-sub-%s",
-#        var.name,
-#        element(split("_", each.key), 2)
-#      )
-#    },
-#    var.tags,
-#  )
-#}
+# private subnet
+resource "aws_subnet" "private" {
+  for_each          = var.private_subnets
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value["cidr"]
+  availability_zone = each.value["zone"]
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-pri-sub-%s",
+        var.name,
+        element(split("_", each.key), 2)
+      )
+    },
+    var.tags,
+  )
+}
 
 # lb subnet
 resource "aws_subnet" "web_lb" {
@@ -138,33 +138,33 @@ resource "aws_route_table_association" "public" {
 ######################################
 ## Private route table and association
 
-## private route table
-#resource "aws_route_table" "private" {
-#  vpc_id     = aws_vpc.vpc.id
-#  depends_on = [aws_nat_gateway.nat_gw]
-#
-#  route {
-#    cidr_block     = "0.0.0.0/0"
-#    nat_gateway_id = aws_nat_gateway.nat_gw.id
-#  }
-#
-#  tags = merge(
-#    {
-#      Name = format(
-#        "%s-pri-rt",
-#        var.name,
-#      )
-#    },
-#    var.tags,
-#  )
-#}
-#
-## private route association
-#resource "aws_route_table_association" "private" {
-#  for_each       = var.private_subnets
-#  subnet_id      = aws_subnet.private[each.key].id
-#  route_table_id = aws_route_table.private.id
-#}
+# private route table
+resource "aws_route_table" "private" {
+  vpc_id     = aws_vpc.vpc.id
+  depends_on = [aws_nat_gateway.nat_gw]
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gw.id
+  }
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-pri-rt",
+        var.name,
+      )
+    },
+    var.tags,
+  )
+}
+
+# private route association
+resource "aws_route_table_association" "private" {
+  for_each       = var.private_subnets
+  subnet_id      = aws_subnet.private[each.key].id
+  route_table_id = aws_route_table.private.id
+}
 
 #####################################
 # lb route table and association

@@ -10,7 +10,17 @@ resource "aws_instance" "public" {
   subnet_id               = var.pub_sub_ids[0]
   disable_api_termination = var.instance_disable_termination
 
-  user_data = file("${path.module}/user_data/user_data_public.sh")
+  #user_data = file("${path.module}/user_data/user_data_public.sh")
+  user_data = <<-EOF
+    #!/bin/bash
+    mkdir /test
+    touch /test/test.txt
+    sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+    useradd jsp
+    echo "P@ssw0rd!12#" | passwd jsp --stdin
+    systemctl restart sshd
+  EOF
 
   root_block_device {
     volume_size           = 8
@@ -30,7 +40,7 @@ resource "aws_instance" "public" {
 }
 
 
-# private server
+## private server
 #resource "aws_instance" "private" {
 #  key_name               = var.key_name
 #  ami                    = data.aws_ami.amazon_linux2_kernel_5.id
@@ -90,16 +100,55 @@ resource "aws_eip" "public" {
 resource "aws_launch_configuration" "jsp_config" {
   name_prefix     = "jsp-lauchconfig-"
   image_id        = data.aws_ami.ubuntu.id
-  instance_type   = var.ec2_type_public
-  security_groups = [var.security_group_id_public]
+  instance_type   = var.ec2_type_private
+  security_groups = [var.security_group_id_private]
   key_name        = var.key_name
   iam_instance_profile    = var.iam_instance_profile
 
 
-  user_data = file("${path.module}/user_data/user_data_private.sh")
+  #user_data = file("${path.module}/user_data/user_data_private.sh")
+  user_data = <<-EOF
+    sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+    useradd jsp
+    echo "P@ssw0rd!12#" | passwd jsp --stdin
+    systemctl restart sshd
+    mkdir /tmp/ssm
+    cd /tmp/ssm
+    wget https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+    dpkg -i amazon-ssm-agent.deb
+    systemctl status amazon-ssm-agent
+    systemctl enable amazon-ssm-agent
+    systemctl restart amazon-ssm-agent
+
+    # Check the Linux distribution
+    if [ -f /etc/redhat-release ]; then
+      # CentOS or Amazon Linux
+      echo "Updating yum"
+      yum update -y
+      echo "Installing Nginx"
+      yum install -y nginx
+      systemctl enable nginx --now
+      systemctl status nginx --no-pager
+    elif [ -f /etc/lsb-release ]; then
+      # Ubuntu
+      echo "Updating system using apt..."
+      apt update
+      echo "Installing Nginx using apt..."
+      apt install -y nginx
+      echo "Enabling and starting Nginx..."
+      systemctl enable nginx --now
+      systemctl status nginx --no-pager
+    else
+      echo "Not found OS-release"
+      exit 1
+    fi
+
+    echo "Nginx installation completed."
+  EOF
 
   root_block_device {
-    volume_size           = 10
+    volume_size           = 30
     volume_type           = "gp3"
     delete_on_termination = true
   }

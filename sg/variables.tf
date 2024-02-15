@@ -9,7 +9,8 @@ variable "public_ingress_rules" {}
 variable "public_egress_rules" {}
 
 # private ingress IP list
-#variable "private_ingress_rules" {}
+variable "private_ingress_rules" {}
+variable "private_egress_rules" {}
 
 # web lb sg rule IP list
 variable "web_lb_ingress_rules" {}

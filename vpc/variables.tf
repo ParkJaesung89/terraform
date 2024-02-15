@@ -14,7 +14,7 @@ variable "az_names" {}
 variable "public_subnets" {}
 
 # private subnet list
-#variable "private_subnets" {}
+variable "private_subnets" {}
 
 # lb subnet list
 variable "lb_subnets_web" {

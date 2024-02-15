@@ -9,7 +9,7 @@ module "vpc" {
 
   vpc_cidr        = var.vpc_cidr
   public_subnets  = var.public_subnets
-#  private_subnets = var.private_subnets
+  private_subnets = var.private_subnets
   lb_subnets_web = var.lb_subnets_web
   lb_subnets_was = var.lb_subnets_was
 
@@ -34,13 +34,13 @@ module "ec2" {
   az_names = var.az_names
 
   public_subnets  = var.public_subnets
-#  private_subnets = var.private_subnets
+  private_subnets = var.private_subnets
   lb_subnets_web = var.lb_subnets_web
   lb_subnets_was = var.lb_subnets_was 
 
   # module vpc
   pub_sub_ids = module.vpc.public_subnet_ids
-  #pri_sub_ids = module.vpc.private_subnet_ids
+  pri_sub_ids = module.vpc.private_subnet_ids
   pri_web_lb_sub_ids = module.vpc.web_lb_subnet_ids
   
   # module iam
@@ -48,14 +48,14 @@ module "ec2" {
 
   # module sg
   security_group_id_public  = module.sg.security_group_id_public
-#  security_group_id_private = module.sg.security_group_id_private
+  security_group_id_private = module.sg.security_group_id_private
   
 
   instance_disable_termination = var.instance_disable_termination
   key_name                     = "${var.name}-key"
   volume_size                  = var.ec2_volume_size
   ec2_type_public              = var.ec2_type_public
-#  ec2_type_private             = var.ec2_type_private
+  ec2_type_private             = var.ec2_type_private
 
   web_lb_tg_arn                    = module.lb.web_lb_tg_arn
 }
@@ -71,7 +71,9 @@ module "sg" {
   public_ingress_rules  = var.public_ingress_rules
   public_egress_rules  = var.public_egress_rules
 
-#  private_ingress_rules = var.private_ingress_rules
+  private_ingress_rules = var.private_ingress_rules
+  private_egress_rules  = var.private_egress_rules
+
   web_lb_ingress_rules = var.web_lb_ingress_rules
   web_lb_egress_rules = var.web_lb_egress_rules
 
