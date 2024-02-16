@@ -109,3 +109,12 @@ module "route53" {
   lb_zone_id  = module.lb.lb_zone_id
 
 }
+
+
+module "acm" {
+  source = "./acm"
+
+  name                     = var.name
+  
+
+}

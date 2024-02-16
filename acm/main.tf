@@ -1,6 +1,6 @@
-resource "aws_acm_certificate" "sangchulkr" {
-    domain_name       = "sangchul.kr"
-    subject_alternative_names = [ "*.sangchul.kr" ]
+resource "aws_acm_certificate" "jsp-tech-acm" {
+    domain_name       = "jsp-tech.store"
+    subject_alternative_names = [ "*.jsp-tech.store" ]
     validation_method = "DNS"
     lifecycle {
         create_before_destroy = true
@@ -10,5 +10,6 @@ resource "aws_acm_certificate" "sangchulkr" {
         "%s-%s-acm",
         var.name,
         terraform.workspace
+      )
     }
 }
