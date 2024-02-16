@@ -61,16 +61,16 @@ lb_subnets_web = [
   }
 ]
 
-lb_subnets_was = [
-  {
-    zone = "ap-northeast-2a"
-    cidr = "10.10.200.0/24"
-  },
-  {
-    zone = "ap-northeast-2c"
-    cidr = "10.10.210.0/24"
-  }
-]
+#lb_subnets_was = [
+#  {
+#    zone = "ap-northeast-2a"
+#    cidr = "10.10.200.0/24"
+#  },
+#  {
+#    zone = "ap-northeast-2c"
+#    cidr = "10.10.210.0/24"
+#  }
+#]
 
 
 ###################################################################
@@ -103,36 +103,36 @@ public_ingress_rules = [
   }
 ]
 
-public_egress_rules = [
-  {
-    from_port = "0",
-    to_port   = "0",
-    cidr      = "0.0.0.0/0"
-    desc      = "to anywhere"
-  }
-]
+#public_egress_rules = [
+#  {
+#    from_port = "0",
+#    to_port   = "0",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "to anywhere"
+#  }
+#]
 
 
-private_ingress_rules = [
-  {
-    from_port = "22",
-    to_port   = "22",
-    cidr      = "0.0.0.0/0"
-    desc      = "From jsp SSH(random test ip)"
-  },
-  {
-    from_port = "80",
-    to_port   = "80",
-    cidr      = "0.0.0.0/0"
-    desc      = "to anywhere HTTP)"
-  },
-  {
-    from_port = "443",
-    to_port   = "443",
-    cidr      = "0.0.0.0/0"
-    desc      = "to anywhere HTTP)"
-  }
-]
+#private_ingress_rules = [
+#  {
+#    from_port = "22",
+#    to_port   = "22",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "From jsp SSH(random test ip)"
+#  },
+#  {
+#    from_port = "80",
+#    to_port   = "80",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "to anywhere HTTP)"
+#  },
+#  {
+#    from_port = "443",
+#    to_port   = "443",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "to anywhere HTTP)"
+#  }
+#]
 
 private_egress_rules = [
   {
@@ -145,12 +145,6 @@ private_egress_rules = [
 
 
 web_lb_ingress_rules = [
-  {
-    from_port = "22",
-    to_port   = "22",
-    cidr      = "0.0.0.0/0"
-    desc      = "From bastion"
-  },
   {
     from_port = "80",
     to_port   = "80",
@@ -165,38 +159,38 @@ web_lb_ingress_rules = [
   }
 ]
 
-web_lb_egress_rules = [
-  {
-    from_port = "0",
-    to_port   = "0",
-    cidr      = "0.0.0.0/0"
-    desc      = "to anywhere"
-  }
-]
+#web_lb_egress_rules = [
+#  {
+#    from_port = "ALL",
+#    to_port   = "ALL",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "to anywhere"
+#  }
+#]
 
-was_lb_ingress_rules = [
-  {
-    from_port = "22",
-    to_port   = "22",
-    cidr      = "0.0.0.0/0"
-    desc      = "From bastion"
-  },
-  {
-    from_port = "80",
-    to_port   = "80",
-    cidr      = "0.0.0.0/0"
-    desc      = "From lb http"
-  }
-]
+#was_lb_ingress_rules = [
+#  {
+#    from_port = "22",
+#    to_port   = "22",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "From bastion"
+#  },
+#  {
+#    from_port = "80",
+#    to_port   = "80",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "From lb http"
+#  }
+#]
 
-was_lb_egress_rules = [
-  {
-    from_port = "0",
-    to_port   = "0",
-    cidr      = "0.0.0.0/0"
-    desc      = "to anywhere"
-  }
-]
+#was_lb_egress_rules = [
+#  {
+#    from_port = "0",
+#    to_port   = "0",
+#    cidr      = "0.0.0.0/0"
+#    desc      = "to anywhere"
+#  }
+#]
 
 
 ###################################################################
@@ -217,13 +211,13 @@ web_healthy_threshold = 2
 web_unhealthy_threshold = 2
 
 
-#was_lb
-was_lb_listener_port = 80
-was_lb_listener_protocol = "HTTP"
-
-internal        = true
-was_health_check_path  = "/health"
-was_health_check_timeout = 5
-was_health_check_interval = 30
-was_healthy_threshold = 2
-was_unhealthy_threshold = 2
+##was_lb
+#was_lb_listener_port = 80
+#was_lb_listener_protocol = "HTTP"
+#
+#internal        = true
+#was_health_check_path  = "/health"
+#was_health_check_timeout = 5
+#was_health_check_interval = 30
+#was_healthy_threshold = 2
+#was_unhealthy_threshold = 2

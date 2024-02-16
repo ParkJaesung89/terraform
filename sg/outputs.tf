@@ -23,6 +23,6 @@ output "security_group_id_lb_web" {
   value = aws_security_group.web_lb_sg.id
 }
 
-output "security_group_id_lb_was" {
-  value = aws_security_group.was_lb_sg.id
-}
+#output "security_group_id_lb_was" {
+#  value = aws_security_group.was_lb_sg.id
+#}

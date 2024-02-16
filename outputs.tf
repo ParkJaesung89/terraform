@@ -29,3 +29,12 @@ output "public_eip" {
 #output "ec2_private_id" {
 #  value = module.ec2.ec2_private_id
 #}
+
+
+output "lb_dns_name" {
+  value = module.lb.lb_dns_name
+}
+
+output "lb_zone_id" {
+  value = module.lb.lb_zone_id
+}

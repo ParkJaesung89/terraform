@@ -10,12 +10,12 @@ variable "volume_size" {}
 variable "public_subnets" {}
 variable "private_subnets" {}
 variable "lb_subnets_web" {}
-variable "lb_subnets_was" {}
+#variable "lb_subnets_was" {}
 
 #  From module VPC
 variable "pub_sub_ids" {}
 variable "pri_sub_ids" {}
-variable "pri_web_lb_sub_ids" {}
+variable "private_subnet_ids" {}
 
 #  From module IAM
 variable "iam_instance_profile" {}

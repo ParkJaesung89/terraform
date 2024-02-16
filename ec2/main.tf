@@ -105,44 +105,24 @@ resource "aws_launch_configuration" "jsp_config" {
   key_name        = var.key_name
   iam_instance_profile    = var.iam_instance_profile
 
-
   #user_data = file("${path.module}/user_data/user_data_private.sh")
   user_data = <<-EOF
-    sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-    useradd jsp
-    echo "P@ssw0rd!12#" | passwd jsp --stdin
-    systemctl restart sshd
-    mkdir /tmp/ssm
-    cd /tmp/ssm
-    wget https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
-    dpkg -i amazon-ssm-agent.deb
-    systemctl status amazon-ssm-agent
-    systemctl enable amazon-ssm-agent
-    systemctl restart amazon-ssm-agent
+  #!/bin/bash
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/g' /etc/ssh/sshd_config
+    sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+    
+    useradd -m -d /home/jsp -s /bin/bash jsp
+    echo 'jsp:P@ssw0rd12#' | sudo chpasswd
+    usermod -aG sudo jsp
 
-    # Check the Linux distribution
-    if [ -f /etc/redhat-release ]; then
-      # CentOS or Amazon Linux
-      echo "Updating yum"
-      yum update -y
-      echo "Installing Nginx"
-      yum install -y nginx
-      systemctl enable nginx --now
-      systemctl status nginx --no-pager
-    elif [ -f /etc/lsb-release ]; then
-      # Ubuntu
-      echo "Updating system using apt..."
-      apt update
-      echo "Installing Nginx using apt..."
-      apt install -y nginx
-      echo "Enabling and starting Nginx..."
-      systemctl enable nginx --now
-      systemctl status nginx --no-pager
-    else
-      echo "Not found OS-release"
-      exit 1
-    fi
+    systemctl restart sshd
+    
+    apt update
+    apt install -y nginx
+    systemctl enable nginx --now
+    mkdir /var/html/health
+    echo "test-page" > /var/www/html/health/index.html
+
 
     echo "Nginx installation completed."
   EOF
@@ -163,7 +143,7 @@ resource "aws_launch_configuration" "jsp_config" {
 resource "aws_autoscaling_group" "jsp_alb" {
   name                 = format("%s-%s-asg", var.name, terraform.workspace)
   launch_configuration = aws_launch_configuration.jsp_config.name
-  vpc_zone_identifier  = [var.pri_web_lb_sub_ids[0], var.pri_web_lb_sub_ids[1]]
+  vpc_zone_identifier  = [var.private_subnet_ids[0], var.private_subnet_ids[1]]
 
   # ELB 연결
   health_check_type = "ELB"

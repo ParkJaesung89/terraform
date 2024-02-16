@@ -11,7 +11,7 @@ module "vpc" {
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
   lb_subnets_web = var.lb_subnets_web
-  lb_subnets_was = var.lb_subnets_was
+  #lb_subnets_was = var.lb_subnets_was
 
 }
 
@@ -36,12 +36,12 @@ module "ec2" {
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
   lb_subnets_web = var.lb_subnets_web
-  lb_subnets_was = var.lb_subnets_was 
+  #lb_subnets_was = var.lb_subnets_was 
 
   # module vpc
   pub_sub_ids = module.vpc.public_subnet_ids
   pri_sub_ids = module.vpc.private_subnet_ids
-  pri_web_lb_sub_ids = module.vpc.web_lb_subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
   
   # module iam
   iam_instance_profile = module.iam.iam_instance_profile
@@ -69,17 +69,17 @@ module "sg" {
   tags = var.tags
 
   public_ingress_rules  = var.public_ingress_rules
-  public_egress_rules  = var.public_egress_rules
+  #public_egress_rules  = var.public_egress_rules
 
-  private_ingress_rules = var.private_ingress_rules
+  #private_ingress_rules = var.private_ingress_rules
   private_egress_rules  = var.private_egress_rules
 
   web_lb_ingress_rules = var.web_lb_ingress_rules
-  web_lb_egress_rules = var.web_lb_egress_rules
+  #web_lb_egress_rules = var.web_lb_egress_rules
 
 
-  was_lb_ingress_rules = var.was_lb_ingress_rules
-  was_lb_egress_rules = var.was_lb_egress_rules
+  #was_lb_ingress_rules = var.was_lb_ingress_rules
+  #was_lb_egress_rules = var.was_lb_egress_rules
 
 
   # module vpc
@@ -93,11 +93,19 @@ module "lb" {
   name                     = var.name
   tags                     = var.tags
   internet_facing          = var.internet_facing
-  internal                 = var.internal
+  #internal                 = var.internal
   security_group_id_lb_web = module.sg.security_group_id_lb_web
-  security_group_id_lb_was = module.sg.security_group_id_lb_was
+  #security_group_id_lb_was = module.sg.security_group_id_lb_was
   lb_subnets_web               = module.vpc.web_lb_subnet_ids # var.lb_subnets_web
-  lb_subnets_was               = module.vpc.was_lb_subnet_ids # var.lb_subnets_was
+  #lb_subnets_was               = module.vpc.was_lb_subnet_ids # var.lb_subnets_was
   vpc_id                   = module.vpc.vpc_id
  #  domain_name       = "example.com"
+}
+
+module "route53" {
+  source = "./route53"
+  lb_dns_name = module.lb.lb_dns_name
+
+  lb_zone_id  = module.lb.lb_zone_id
+
 }
