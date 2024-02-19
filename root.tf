@@ -104,17 +104,8 @@ module "lb" {
 
 module "route53" {
   source = "./route53"
-  lb_dns_name = module.lb.lb_dns_name
-
-  lb_zone_id  = module.lb.lb_zone_id
-
-}
-
-
-module "acm" {
-  source = "./acm"
-
-  name                     = var.name
   
-
+  name        = var.name
+  lb_dns_name = module.lb.lb_dns_name
+  lb_zone_id  = module.lb.lb_zone_id
 }

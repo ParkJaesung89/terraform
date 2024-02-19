@@ -2,6 +2,7 @@
 variable "environment" {}
 
 # Region - e.g: ap-northeast-2
+#variable "global_region" {}
 variable "region" {}
 
 # project name

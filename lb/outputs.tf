@@ -9,7 +9,3 @@ output "lb_dns_name" {
 output "lb_zone_id" {
   value = aws_lb.web_lb.zone_id
 }
-
-#output "certificate_arn" {
-#  value = aws_acm_certificate.jsp_acm.arn
-#}
