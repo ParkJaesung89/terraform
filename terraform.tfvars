@@ -201,8 +201,11 @@ web_lb_ingress_rules = [
 
 
 #web_lb
-web_lb_listener_port = 80
-web_lb_listener_protocol = "HTTP"
+web_lb_listener_port_http = 80
+web_lb_listener_protocol_http = "HTTP"
+
+web_lb_listener_port_https = 443
+web_lb_listener_protocol_https = "HTTPS"
 
 internet_facing = false
 web_health_check_path  = "/health"

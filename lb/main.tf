@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.0.2"
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~> 5.0"
+      configuration_aliases = [aws.us-east-1]
+    }
+  }
+}
+
 #################################################################################
 #WEB
 #################################################################################
@@ -12,6 +23,14 @@ resource "aws_lb" "web_lb" {
   
   subnets            = var.lb_subnets_web
   #subnets = toset(module.vpc.web_lb_subnet_ids)
+
+## alb logs configuration
+#  access_logs {
+#    bucket  = aws_s3_bucket.{log_bucket}.vpc_id
+#    prefix  = "frontend-alb"
+#    enabled = true
+#  }
+
 
   tags = merge(
     {
@@ -50,16 +69,33 @@ resource "aws_lb_target_group" "web_lb_tg" {
 
 #####################################
 # Load Balancer Listener
+resource "aws_lb_listener" "https_forward" {
+  load_balancer_arn = aws_lb.web_lb.arn
+  port = var.web_lb_listener_port_https
+  protocol  = var.web_lb_listener_protocol_https
+  certificate_arn = var.certificate_arn
+
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.web_lb_tg.id
+  }
+}
+
 
 resource "aws_lb_listener" "web_http" {
   load_balancer_arn = aws_lb.web_lb.arn
-  port = var.web_lb_listener_port
-  protocol = var.web_lb_listener_protocol
+  port = var.web_lb_listener_port_http
+  protocol = var.web_lb_listener_protocol_http
     
   # if it differs from the listener rule, a 404 error page is displayed
   default_action {
-    target_group_arn = aws_lb_target_group.web_lb_tg.arn
-    type             = "forward"
+    type             = "redirect"
+    
+    redirect {
+      port        = var.web_lb_listener_port_https
+      protocol    = var.web_lb_listener_protocol_https
+      status_code = "HTTP_301"
+    }
   }
 
 #    default_action {
@@ -76,21 +112,21 @@ resource "aws_lb_listener" "web_http" {
 
 ######################################
 ## Load Balancer Listener_rule
-resource "aws_lb_listener_rule" "web_lb_rule" {
-  listener_arn = aws_lb_listener.web_http.arn
-  priority     = 100
-
-  condition {
-    path_pattern {
-      values = ["*"]
-    }
-  }
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.web_lb_tg.arn
-  }
-}
+#resource "aws_lb_listener_rule" "web_lb_rule" {
+#  listener_arn = aws_lb_listener.web_http.arn
+#  priority     = 100
+#
+#  condition {
+#    path_pattern {
+#      values = ["*"]
+#    }
+#  }
+#
+#  action {
+#    type             = "forward"
+#    target_group_arn = aws_lb_target_group.web_lb_tg.arn
+#  }
+#}
 
 
 

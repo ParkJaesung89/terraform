@@ -99,7 +99,11 @@ module "lb" {
   lb_subnets_web               = module.vpc.web_lb_subnet_ids # var.lb_subnets_web
   #lb_subnets_was               = module.vpc.was_lb_subnet_ids # var.lb_subnets_was
   vpc_id                   = module.vpc.vpc_id
- #  domain_name       = "example.com"
+  certificate_arn          = module.route53.acm_arn
+
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
 }
 
 module "route53" {
@@ -108,4 +112,8 @@ module "route53" {
   name        = var.name
   lb_dns_name = module.lb.lb_dns_name
   lb_zone_id  = module.lb.lb_zone_id
+
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
 }

@@ -120,7 +120,7 @@ resource "aws_launch_configuration" "jsp_config" {
     apt update
     apt install -y nginx
     systemctl enable nginx --now
-    mkdir /var/html/health
+    mkdir /var/www/html/health
     echo "test-page" > /var/www/html/health/index.html
 
 

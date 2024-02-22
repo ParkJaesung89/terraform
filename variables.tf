@@ -58,13 +58,21 @@ variable "internet_facing" {
   description = "Is the load balancer internal"
   default     = false
 }
-variable "web_lb_listener_protocol" {
+variable "web_lb_listener_protocol_http" {
   description = "The protocol for the listener"
   default     = "HTTP"
 }
-variable "web_lb_listener_port" {
+variable "web_lb_listener_protocol_https" {
+  description = "The protocol for the listener"
+  default     = "HTTPS"
+}
+variable "web_lb_listener_port_http" {
   description = "The port for the listener"
   default     = 80
+}
+variable "web_lb_listener_port_https" {
+  description = "The port for the listener"
+  default     = 443
 }
 
 ## for web_lb health check
