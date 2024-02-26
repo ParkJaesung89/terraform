@@ -78,7 +78,7 @@ variable "web_lb_listener_port_https" {
 ## for web_lb health check
 variable "web_health_check_path" {
   description = "The health check path"
-  default     = "/health"
+  default     = "/health/index.html"
 }
 #
 variable "web_health_check_timeout" {
@@ -101,6 +101,10 @@ variable "web_unhealthy_threshold" {
   default     = 2
 }
 
+variable "web_health_check_matcher" {
+  description = "The healthy code match"
+  default     = "200,301"
+}
 
 ## for dns
 #variable "domain_name" {

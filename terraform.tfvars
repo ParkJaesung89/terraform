@@ -213,6 +213,7 @@ web_health_check_timeout = 5
 web_health_check_interval = 30
 web_healthy_threshold = 2
 web_unhealthy_threshold = 2
+web_health_check_matcher = [200, 301]
 
 
 ##was_lb

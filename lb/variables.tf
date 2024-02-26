@@ -76,6 +76,10 @@ variable "web_unhealthy_threshold" {
   default     = 2
 }
 
+variable "web_health_check_matcher" {
+  description = "The healthy code match"
+  default     = "200,301"
+}
 
 ##############
 ### ACM module

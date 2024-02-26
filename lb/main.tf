@@ -63,6 +63,7 @@ resource "aws_lb_target_group" "web_lb_tg" {
     interval            = var.web_health_check_interval
     healthy_threshold   = var.web_healthy_threshold
     unhealthy_threshold = var.web_unhealthy_threshold
+    matcher             = var.web_health_check_matcher
   } 
 }
 
