@@ -100,6 +100,7 @@ module "lb" {
   #lb_subnets_was               = module.vpc.was_lb_subnet_ids # var.lb_subnets_was
   vpc_id                   = module.vpc.vpc_id
   certificate_arn          = module.route53.acm_arn
+  acm_validation           = module.route53.acm_validation
 
   providers = {
     aws.us-east-1 = aws.us-east-1
@@ -116,4 +117,9 @@ module "route53" {
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
+}
+
+module "cloudfront" {
+  source = "./cloudfront"
+  
 }

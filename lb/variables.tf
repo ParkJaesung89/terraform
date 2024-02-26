@@ -13,7 +13,9 @@ variable "security_group_id_lb_web" {}
 # From module VPC
 variable "vpc_id" {}
 
+# From module route53
 variable "certificate_arn" {}
+variable "acm_validation" {}
 
 # for web_lb
 variable "internet_facing" {
@@ -73,6 +75,12 @@ variable "web_unhealthy_threshold" {
   description = "The unhealthy threshold"
   default     = 2
 }
+
+
+##############
+### ACM module
+##############
+
 
 
 ## for dns
