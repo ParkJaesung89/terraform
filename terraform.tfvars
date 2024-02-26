@@ -208,7 +208,7 @@ web_lb_listener_port_https = 443
 web_lb_listener_protocol_https = "HTTPS"
 
 internet_facing = false
-web_health_check_path  = "/health"
+web_health_check_path  = "/health/index.html"
 web_health_check_timeout = 5
 web_health_check_interval = 30
 web_healthy_threshold = 2
