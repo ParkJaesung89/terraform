@@ -93,6 +93,19 @@ resource "aws_lb_listener" "web_http" {
     
   # if it differs from the listener rule, a 404 error page is displayed
   default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.web_lb_tg.id
+  }
+
+  depends_on = [var.certificate_arn, var.acm_validation]
+}
+
+
+resource "aws_lb_listener_rule" "static_page" {
+  listener_arn = aws_lb_listener.web_http.arn
+  priority     = 1
+
+  action {
     type             = "redirect"
     
     redirect {
@@ -101,18 +114,14 @@ resource "aws_lb_listener" "web_http" {
       status_code = "HTTP_301"
     }
   }
+  
+  condition {
+    host_header {
+      values = ["push.jsp-tech.store"]
+    }
 
-#    default_action {
-#        type = "fixed-response"
-#
-#        fixed_response {
-#            content_type = "text/plain"
-#            message_body = "404: page not found"
-#            status_code = 404
-#        }
-#    }
+  }
 }
-
 
 ######################################
 ## Load Balancer Listener_rule
