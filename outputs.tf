@@ -38,3 +38,17 @@ output "lb_dns_name" {
 output "lb_zone_id" {
   value = module.lb.lb_zone_id
 }
+
+
+output "cf_acm_arn" {
+  value = module.route53.acm_arn
+}
+
+
+output "cf_dns_name" {
+  value = module.cloudfront.cf_dns_name
+}
+
+output "cf_zone_id" {
+  value = module.cloudfront.cf_zone_id
+}

@@ -114,6 +114,9 @@ module "route53" {
   lb_dns_name = module.lb.lb_dns_name
   lb_zone_id  = module.lb.lb_zone_id
 
+  cf_dns_name = module.cloudfront.cf_dns_name
+  cf_zone_id = module.cloudfront.cf_zone_id
+
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
@@ -122,4 +125,8 @@ module "route53" {
 module "cloudfront" {
   source = "./cloudfront"
   
+  name                     = var.name
+  tags                     = var.tags
+  lb_dns_name              = module.lb.lb_dns_name
+  cf_acm_arn                  = module.route53.cf_acm_arn
 }
