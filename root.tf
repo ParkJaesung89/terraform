@@ -128,5 +128,14 @@ module "cloudfront" {
   name                     = var.name
   tags                     = var.tags
   lb_dns_name              = module.lb.lb_dns_name
-  cf_acm_arn                  = module.route53.cf_acm_arn
+  cf_acm_arn               = module.route53.cf_acm_arn
+  waf_acl_arn              = module.waf.waf_acl_arn
+}
+
+module "waf" {
+  source = "./waf"
+
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
 }

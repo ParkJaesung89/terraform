@@ -52,3 +52,7 @@ output "cf_dns_name" {
 output "cf_zone_id" {
   value = module.cloudfront.cf_zone_id
 }
+
+output "waf_acl_arn" {
+  value = module.waf.waf_acl_arn
+}

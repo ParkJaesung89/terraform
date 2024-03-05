@@ -39,6 +39,8 @@ resource "aws_cloudfront_distribution" "cf_dist" {
     minimum_protocol_version     = "TLSv1.2_2021"
   }
 
+  web_acl_id = var.waf_acl_arn
+
   tags = merge(
     {
       Name = format(
