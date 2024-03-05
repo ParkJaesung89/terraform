@@ -9,6 +9,12 @@ terraform {
   }
 }
 
+
+#############################################################
+### WAF - Cloudfront
+#############################################################
+
+# ip_sets block for cloudfront
 resource "aws_wafv2_ip_set" "ipset_global" {
   provider          = aws.us-east-1
   name                  = "block_ips"
@@ -17,6 +23,7 @@ resource "aws_wafv2_ip_set" "ipset_global" {
   addresses             = var.waf_ip_sets
 }
 
+# Create Waf
 resource "aws_wafv2_web_acl" "waf_acl" {
   provider          = aws.us-east-1
   name                  = "${var.waf_prefix}-generic-acl"
@@ -31,6 +38,7 @@ resource "aws_wafv2_web_acl" "waf_acl" {
     metric_name                 = "global-rule"
   }
 
+  # Create managed rule
   dynamic "rule" {
     for_each = var.managed_rules
     content {
@@ -53,7 +61,8 @@ resource "aws_wafv2_web_acl" "waf_acl" {
       }
     }
   }
-
+  
+  # Create ip_sets block rule
   rule {
     name = "block_ips"
     priority = 1
@@ -75,12 +84,15 @@ resource "aws_wafv2_web_acl" "waf_acl" {
   }
 }
 
+
+# Create cloudwatch log group
 resource "aws_cloudwatch_log_group" "waf_logging" {
   provider          = aws.us-east-1
   name = "aws-waf-logs-${var.waf_prefix}"
 }
 
 
+# Enable waf logging
 resource "aws_wafv2_web_acl_logging_configuration" "logging_configuration" {
   provider          = aws.us-east-1
   log_destination_configs   = [aws_cloudwatch_log_group.waf_logging.arn]

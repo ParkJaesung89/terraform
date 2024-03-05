@@ -103,7 +103,7 @@ terraform destroy
 3. route 53으로 도메인 연동하기.(완료)
 
 [route 53 + ACM]
-1. 도메인 생성 + ACM  or  도메인 구입하여 레코드 등록(진행중)
+1. 도메인 생성 + ACM  or  도메인 구입하여 레코드 등록(완료)
 
 [rds] 
 1. rds 생성 및 ec2 연동
@@ -116,9 +116,9 @@ terraform destroy
 2. 정적 페이지 만들어서 cloudfront 연동하기
 
 [cloudfront]
-1. cloudfront 생성하여 alb랑 연동
+1. cloudfront 생성하여 alb랑 연동(완료)
 2. cloudfront 와 s3도 연동
 
 [waf]
-1. cloudfront waf에서 ip 접근 제어
+1. cloudfront waf에서 ip 접근 제어(완료)
 2. alb waf에서 cloudfront header 값 필터링
