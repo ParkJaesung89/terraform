@@ -1,5 +1,7 @@
 <!--현재 구성은 terraform module에 대한 이해를 하기위한 테스트 구성입니다.-->
 
+[my notebook setting OK]
+
 <h1> terraform 모듈 사용하는 방법에 대해서 정리 </h1>
 
 모듈은 크게 root , child 모듈로 나눌 수 있다.  
