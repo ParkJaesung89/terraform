@@ -62,3 +62,9 @@ variable "managed_rules" {
         }
     ]
 }
+
+variable "http_headers_val_to_block" {
+  description = "List of HTTP Headers value"
+  type = list(string)
+  default = ["jsp"]
+}
