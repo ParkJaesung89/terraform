@@ -1,6 +1,6 @@
 <!--현재 구성은 terraform module에 대한 이해를 하기위한 테스트 구성입니다.-->
 
-[my notebook setting OK]
+[my notebook setting OK] - 2
 
 <h1> terraform 모듈 사용하는 방법에 대해서 정리 </h1>
 
