@@ -82,6 +82,26 @@ resource "aws_subnet" "web_lb" {
 }
 
 
+# RDS subnet
+resource "aws_subnet" "rds" {
+  for_each          = var.db_subnets
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value["cidr"]
+  availability_zone = each.value["zone"]
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-rds-sub-%s",
+        var.name,
+        element(split("_", each.key), 2)
+      )
+    },
+    var.tags,
+  )
+}
+
+
 #resource "aws_subnet" "was_lb" {
 #  #for_each          = var.lb_subnets_was
 #  for_each = { for idx, subnet in var.lb_subnets_was : idx => subnet }      # var.lb_subnets_was의 리스트를 for_each에 사용하도록 맵 형식으로 변환
@@ -232,6 +252,38 @@ resource "aws_route_table_association" "web_lb_rt_association" {
 #  destination_cidr_block = "0.0.0.0/0"
 #  nat_gateway_id = aws_nat_gateway.nat_gw.id
 #}
+
+
+######################################
+## rds route table and association
+
+# rds route table
+resource "aws_route_table" "rds" {
+  vpc_id     = aws_vpc.vpc.id
+  depends_on = [aws_nat_gateway.nat_gw]
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gw.id
+  }
+
+  tags = merge(
+    {
+      Name = format(
+        "%s-rds-rt",
+        var.name,
+      )
+    },
+    var.tags,
+  )
+}
+
+# private route association
+resource "aws_route_table_association" "rds" {
+  for_each       = var.db_subnets
+  subnet_id      = aws_subnet.rds[each.key].id
+  route_table_id = aws_route_table.rds.id
+}
 
 ######################################
 ## Internet gateway

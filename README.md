@@ -123,4 +123,4 @@ terraform destroy
 
 [waf]
 1. cloudfront waf에서 ip 접근 제어(완료)
-2. alb waf에서 cloudfront header 값 필터링
+2. alb waf에서 cloudfront header 값 필터링(완료)

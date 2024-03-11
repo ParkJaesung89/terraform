@@ -14,6 +14,10 @@ output "web_lb_subnet_ids" {
   value = module.vpc.web_lb_subnet_ids
 }
 
+output "db_subnet_ids" {
+  value = module.vpc.db_subnet_ids
+}
+
 output "nat_eip" {
   value = module.vpc.nat_eip
 }

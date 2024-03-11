@@ -25,5 +25,9 @@ variable "lb_subnets_web" {
 #    type = list(map(string))        # lb_subnets_was 변수형식을 list로 변경하고 각요소가 map 형식이 되도록 설정
 #}
 
+
+# rds subnet list
+variable "db_subnets" {}
+
 # Tags
 variable "tags" {}

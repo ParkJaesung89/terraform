@@ -34,6 +34,9 @@ variable "private_subnets" {}
 variable "lb_subnets_web" {}
 #variable "lb_subnets_was" {}
 
+# rds subnet list
+variable "db_subnets" {}
+
 # Tag
 variable "tags" {}
 

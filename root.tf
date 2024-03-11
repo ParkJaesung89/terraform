@@ -11,6 +11,7 @@ module "vpc" {
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
   lb_subnets_web = var.lb_subnets_web
+  db_subnets      = var.db_subnets
   #lb_subnets_was = var.lb_subnets_was
 
 }

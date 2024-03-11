@@ -18,6 +18,10 @@ output "web_lb_subnet_ids" {
 #  value = values(aws_subnet.was_lb)[*].id
 #}
 
+output "db_subnet_ids" {
+  value = values(aws_subnet.rds)[*].id
+}
+
 output "nat_eip" {
   value = aws_eip.nat.public_ip
 }
