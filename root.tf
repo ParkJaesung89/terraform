@@ -130,6 +130,8 @@ module "cloudfront" {
   lb_dns_name              = module.lb.lb_dns_name
   cf_acm_arn               = module.route53.cf_acm_arn
   waf_acl_arn              = module.waf.waf_acl_arn
+  custom_header		   = var.custom_header
+  custom_header_value      = var.custom_header_value
 }
 
 module "waf" {

@@ -106,89 +106,68 @@ resource "aws_wafv2_web_acl_logging_configuration" "logging_configuration" {
 ### WAF - Alb
 #############################################################
 
-# Create regex pattern set
-resource "aws_wafv2_regex_pattern_set" "http_headers" {
-  name = "HTTP-headers"
-  description = "HTTP headers regex pattern set"
-  scope = "REGIONAL"
-  
-  dynamic "regular_expression" {
-    for_each = var.http_headers_val_to_block
-    content {
-      regex_string = regular_expression.value
-    }
-  }
-}
+## Create regex pattern set
+#resource "aws_wafv2_regex_pattern_set" "http_headers" {
+#  name = "HTTP-headers"
+#  description = "HTTP headers regex pattern set"
+#  scope = "REGIONAL"
+#  
+#  dynamic "regular_expression" {
+#    for_each = var.http_headers_val_to_block
+#    content {
+#      regex_string = regular_expression.value
+#    }
+#  }
+#}
 
 
-# Create rule group for cloudfront
 resource "aws_wafv2_rule_group" "check_cloudfront_header" {
-  name = "check-cloudfront-header"
+  name        = "check-cloudfront-header"
   description = "If CloudFront headers do not match, handle it by blocking."
-  scope = "REGIONAL"
-  capacity = "500"
+  scope       = "REGIONAL"
+  capacity    = "500"
 
   rule {
-    name = "block-header-rule"
+    name     = "block-header-rule"
     priority = 1
 
     action {
-      block{}
+      block {}
     }
 
     statement {
       not_statement {
         statement {
-
-          and_statement {
-            statement {
-
-              geo_match_statement {
-                country_codes = ["US", "KR"]
-                forwarded_ip_config {
-                  header_name = "X-Forwarded-For"
-                  fallback_behavior = "MATCH"
-                }
+          byte_match_statement {
+            field_to_match {
+              single_header {
+                name = "jsp-tech"
               }
             }
-            
-            statement {
-
-              regex_pattern_set_reference_statement {
-                arn = aws_wafv2_regex_pattern_set.http_headers.arn
-
-                field_to_match {
-                  single_header {
-                    name = "referer"
-                  }
-                }
-
-                text_transformation {
-                  priority = 2
-                  type = "LOWERCASE"
-                }
-              }
+            text_transformation {
+              priority = 0
+              type     = "NONE"
             }
+            positional_constraint = "EXACTLY"
+            search_string         = "qkrwotjd89"
           }
         }
       }
     }
 
     visibility_config {
-        cloudwatch_metrics_enabled = true
-        sampled_requests_enabled = true
-        metric_name = "ALB-WAF-ACL-Rule-Metric"
+      cloudwatch_metrics_enabled = true
+      sampled_requests_enabled   = true
+      metric_name                = "ALB-WAF-ACL-Rule-Metric"
     }
   }
-  
+
   visibility_config {
-      cloudwatch_metrics_enabled = true
-      sampled_requests_enabled = true
-      metric_name = "ALB-WAF-ACL-Metric"
+    cloudwatch_metrics_enabled = true
+    sampled_requests_enabled   = true
+    metric_name                = "ALB-WAF-ACL-Metric"
   }
-
 }
-
 
 # Create waf_acl for ALB
 resource "aws_wafv2_web_acl" "alb_waf_acl" {
@@ -207,9 +186,9 @@ resource "aws_wafv2_web_acl" "alb_waf_acl" {
   # Create header check rule
   rule {
     name = "cloudfront_header_checks"
-    priority = 1
-    action {
-        allow {}        # 차단은 block{}, 허용할거면 allow{}
+    priority = 0
+    override_action {
+        none {}        # none{} - rule group action 따라감, count{} - rule은 있지만 action은 안하고 다음 순서로 넘김
     }
 
     statement {

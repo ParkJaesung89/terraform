@@ -63,8 +63,9 @@ variable "managed_rules" {
     ]
 }
 
-variable "http_headers_val_to_block" {
-  description = "List of HTTP Headers value"
-  type = list(string)
-  default = ["jsp"]
-}
+#variable "http_headers_val_to_block" {
+#  description = "List of HTTP Headers value"
+#  type = list(string)
+#  #default = ["(?:[a-zA-Z0-9-]+\.)+jsp-tech\\.store"]
+#  default = ["www.jsp-tech.store"]
+#}

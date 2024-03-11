@@ -152,3 +152,15 @@ variable "web_health_check_matcher" {
 #  description = "The unhealthy threshold"
 #  default     = 2
 #}
+
+
+# cloudfront custom_header
+variable "custom_header" {
+  type = string
+  default = "jsp-tech"
+}
+
+variable "custom_header_value" {
+  type = string
+  default = "qkrwotjd89"
+}

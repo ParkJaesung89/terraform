@@ -11,6 +11,10 @@ resource "aws_cloudfront_distribution" "cf_dist" {
       origin_protocol_policy = "match-viewer"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
+    custom_header {
+      name  = var.custom_header
+      value = var.custom_header_value
+    }
   }
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
