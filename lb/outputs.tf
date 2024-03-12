@@ -9,3 +9,7 @@ output "lb_dns_name" {
 output "lb_zone_id" {
   value = aws_lb.web_lb.zone_id
 }
+
+output "lb_arn" {
+  value = aws_lb.web_lb.arn
+}

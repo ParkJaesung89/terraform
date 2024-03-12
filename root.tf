@@ -138,6 +138,8 @@ module "cloudfront" {
 module "waf" {
   source = "./waf"
 
+  lb_arn = module.lb.lb_arn
+
   providers = {
     aws.us-east-1 = aws.us-east-1
   }

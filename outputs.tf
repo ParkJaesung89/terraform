@@ -43,6 +43,9 @@ output "lb_zone_id" {
   value = module.lb.lb_zone_id
 }
 
+output "lb_arn" {
+  value = module.lb.lb_arn
+}
 
 output "cf_acm_arn" {
   value = module.route53.acm_arn

@@ -69,3 +69,6 @@ variable "managed_rules" {
 #  #default = ["(?:[a-zA-Z0-9-]+\.)+jsp-tech\\.store"]
 #  default = ["www.jsp-tech.store"]
 #}
+
+
+variable "lb_arn" {}
