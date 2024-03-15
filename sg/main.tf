@@ -6,6 +6,7 @@ locals {
   private_sg = format("%s-%s-sg", var.name, "private")
   web_lb_sg  = format("%s-%s-sg", var.name, "web-lb")
   #was_lb_sg  = format("%s-%s-sg", var.name, "was-lb")
+  rds_sg = format("%s-%s-sg", var.name, "rds")
 }
 
 
@@ -268,3 +269,54 @@ resource "aws_security_group" "web_lb_sg" {
 #    var.tags
 #  )
 #}
+
+
+
+
+# rds sg
+resource "aws_security_group" "rds" {
+  name        = local.rds_sg
+  description = "rds security group for ${var.name}"
+  vpc_id      = var.vpc_id
+
+  egress {
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(
+    {
+      Name = local.rds_sg
+    },
+    var.tags
+  )
+}
+
+resource "aws_security_group_rule" "rds_bastion_ssh_ingress" {
+  type				= "ingress"
+  from_port			= "22"
+  to_port			= "22"
+  protocol			= "TCP"
+  security_group_id		= "${aws_security_group.rds.id}"
+  source_security_group_id 	= "${aws_security_group.public.id}"
+}
+
+resource "aws_security_group_rule" "rds_bastion_mysql_ingress" {
+  type				= "ingress"
+  from_port			= "3306"
+  to_port			= "3306"
+  protocol			= "TCP"
+  security_group_id		= "${aws_security_group.rds.id}"
+  source_security_group_id 	= "${aws_security_group.public.id}"
+}
+
+resource "aws_security_group_rule" "rds_web_mysql_ingress" {
+  type				= "ingress"
+  from_port			= "3306"
+  to_port			= "3306"
+  protocol			= "TCP"
+  security_group_id		= "${aws_security_group.rds.id}"
+  source_security_group_id 	= "${aws_security_group.private.id}"
+}

@@ -144,3 +144,20 @@ module "waf" {
     aws.us-east-1 = aws.us-east-1
   }
 }
+
+module "rds" {
+  source = "./rds"
+  
+  name = var.name
+  tags = var.tags
+
+  db_sub_ids              = module.vpc.db_subnet_ids
+  vpc_security_group_ids  = module.sg.security_group_id_rds
+  master_password = module.secretsmanager.secret_string
+}
+
+module "secretsmanager" {
+  source = "./secretsmanager"
+  
+  name = var.name
+}

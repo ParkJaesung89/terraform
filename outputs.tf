@@ -18,6 +18,10 @@ output "db_subnet_ids" {
   value = module.vpc.db_subnet_ids
 }
 
+output "security_group_id_rds" {
+  value = module.sg.security_group_id_rds
+}
+
 output "nat_eip" {
   value = module.vpc.nat_eip
 }
@@ -62,4 +66,14 @@ output "cf_zone_id" {
 
 output "waf_acl_arn" {
   value = module.waf.waf_acl_arn
+}
+
+
+#output "secret_arn" {
+#  value = module.secretsmanager.secret_arn
+#}
+
+
+output "secret_string" {
+  value = module.secretsmanager.secret_string
 }

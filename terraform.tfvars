@@ -51,6 +51,17 @@ private_subnets = {
   }
 }
 
+db_subnets = {
+  rds_sub_2a = {
+    zone = "ap-northeast-2a"
+    cidr = "10.10.50.0/24"
+  },
+  rds_sub_2c = {
+    zone = "ap-northeast-2c"
+    cidr = "10.10.51.0/24"
+  }
+}
+
 lb_subnets_web = [
   {
     zone = "ap-northeast-2a"
@@ -73,17 +84,6 @@ lb_subnets_web = [
 #  }
 #]
 
-
-db_subnets = {
-  db_sub_2a = {
-    zone = "ap-northeast-2a"
-    cidr = "10.10.20.0/24"
-  },
-  db_sub_2c = {
-    zone = "ap-northeast-2c"
-    cidr = "10.10.21.0/24"
-  }
-}
 
 ###################################################################
 # Instance setting
