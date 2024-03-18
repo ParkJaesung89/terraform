@@ -59,8 +59,8 @@ resource "aws_rds_cluster" "aurora_mysql_db" {
   #iops = var.iops      #aurora-mysql에서는 해당 옵션이 없음
   database_name = var.database_name
   master_username = var.master_username
-  master_password = var.master_password
-  #manage_master_user_password = true    # 해당 설정 시 master_password 설정은 불가능
+  #master_password = var.master_password
+  manage_master_user_password = true    # 해당 설정 시 master_password 설정은 불가능
   skip_final_snapshot = var.skip_final_snapshot       # RDS 삭제 시, 스냅샷 생성 여부 설정(true - 스냅샷 생성 X)
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.jsp_parameter_group.name
   #depends_on = [var.secretsmanager_arn]

@@ -55,4 +55,4 @@ variable "master_username" {
   default = "jsp"
 }
 
-variable "master_password" {}
+#variable "master_password" {}

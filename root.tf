@@ -153,11 +153,11 @@ module "rds" {
 
   db_sub_ids              = module.vpc.db_subnet_ids
   vpc_security_group_ids  = module.sg.security_group_id_rds
-  master_password = module.secretsmanager.secret_string
+  #master_password = module.secretsmanager.secret_string
 }
 
-module "secretsmanager" {
-  source = "./secretsmanager"
-  
-  name = var.name
-}
+#module "secretsmanager" {
+#  source = "./secretsmanager"
+#  
+#  name = var.name
+#}

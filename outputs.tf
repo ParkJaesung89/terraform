@@ -74,6 +74,6 @@ output "waf_acl_arn" {
 #}
 
 
-output "secret_string" {
-  value = module.secretsmanager.secret_string
-}
+#output "secret_string" {
+#  value = module.secretsmanager.secret_string
+#}
