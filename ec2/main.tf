@@ -19,6 +19,7 @@ resource "aws_instance" "public" {
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
     useradd jsp
     echo "P@ssw0rd!12#" | passwd jsp --stdin
+    usermod -aG wheel jsp
     systemctl restart sshd
   EOF
 
