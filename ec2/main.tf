@@ -33,7 +33,7 @@ resource "aws_instance" "public" {
   tags = merge(
     {
       Name = format(
-        "%s-public-bastion-backendtest2",
+        "%s-public-bastion",
         var.name
       )
     },

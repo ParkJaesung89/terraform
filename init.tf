@@ -4,7 +4,7 @@
 # Create s3 to store tfstate file
 resource "aws_s3_bucket" "terraform_tfstate" {
   bucket        = "jsp-tfstate"
-  #force_destroy = true      #false
+  force_destroy = true      #false
 
   # 리소스 삭제시에 테라폼 오류 및 종료됨
   lifecycle {

@@ -5,9 +5,30 @@
 ![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/b898b740-4496-4d0d-9a38-b9d9ea2c782a)
 
 
-# 현재 구성에서 terraform 사용
-- 현재 terraform 구성에서 backend는 s3로 사용중이며, s3의 tfstate 파일을 관리하기위하여 dynamoDB의 table 사용.
-- backend를 사용하지 않을 경우 init.tf 파일 주석처리, provider.tf 파일의 backend 설정 주석처리
+# 현재 terraform 코드 활용하여 구성 시 사용방법 및 팁
+- 상태파일(terraform.tfstate)의 관리를 위하여 backend는 s3로, s3에 tfstate 파일을  
+  저장 및 versioning하여 관리되며, dynamoDB의 table의 lock을 활용하여 동시작업을 막았습니다.(혼자 작업시에는 문제되지 않으나, 여러사람과 협업시에 중복작업 하게되면 문제가 발생할 수 있기 때문입니다.)
+  > backend를 사용하지 않을 경우 init.tf의 전체 내용과 provider.tf 파일의 backend 설정 주석처리
+
+- terraform workspace를 이용하여 여러 환경에 각각 구성이 가능합니다. 특정 workspace를 생성하여 지정하지 않을 경우에는 "default"가 기본 workspace입니다.
+  ```bash
+  terraform workspace list                        # workspace 리스트 확인
+  terraform workspace new {$workspace_name}       # workspace 생성
+  terraform workspace select {$workspace_name}    # workspace 선택
+  terraform workspace delete {$workspace_name}    # workspace 삭제
+  terraform workspace show                        # 현재 workspace 확인
+  ```
+
+- 웹서버에서 사용할 도메인은 aws에서 직접 구매한 것이 아닌 타 업체의 도메인을 가져와서 샤용해야 됩니다.
+  그래서 terraform apply 시에 acm 인증부분을 지속적으로 시도하기 때문에 route 53에 hosted zones에서 해당 도메인에 대한 NS 레코드값을 도메인에 설정해준 후에 전파가 되어야 이후의 작업이 진행됩니다.
+  > 전파가 느릴 경우 NS 레코드의 TTL 값을 낮춰서 전파 시간을 줄일 수 있습니다.
+
+- rds는 패스워드를 직접 입력하는 방법으로 생성하였으며, 코드상에 패스워드를 노출하지 않도록 secrets manager를
+  이용해서 랜덤 패스워드 값으로 secret value에 저장하고 해당 값을 rds password에 적용하였습니다.
+  > 다만, terraform.tfstate 파일에 확인해보면 secret value 값이 그대로 노출되있는 것을 확인하여, 이부분 보완하려고
+    합니다.
+
+
 
 ## terraform으로 환경 및 리소스 생성 작업 순서
 1. terraform 사용하기 위한 디렉토리에 초기화 진행
