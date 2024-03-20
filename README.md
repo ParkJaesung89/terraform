@@ -121,32 +121,3 @@ root 모듈에는 크게 4가지 중요 파일이 존재한다.
     쉽게 말해서 root와 child의 변수를 똑같이 정의 내려둬야됨.
     ```
 =====================================================================
-
-
-
-[개인 미션] <!-- 추가해야 될 것들 -->
-[lb_target]
-1. targets 에 ec2 등록할것(완료)
-2. 엑세스 로그 같은 cloudwatch 설정해볼것
-3. route 53으로 도메인 연동하기.(완료)
-
-[route 53 + ACM]
-1. 도메인 생성 + ACM  or  도메인 구입하여 레코드 등록(완료)
-
-[rds] 
-1. rds 생성 및 ec2 연동
-
-[ec2]
-1. ec2 생성시에 스크립트로 초기 프로비저닝 하기(완료)
-
-[S3] 
-1. S3 생성 및 terraform state 파일 저장하기 + dynamodb 에 암호화(완료)
-2. 정적 페이지 만들어서 cloudfront 연동하기
-
-[cloudfront]
-1. cloudfront 생성하여 alb랑 연동(완료)
-2. cloudfront 와 s3도 연동
-
-[waf]
-1. cloudfront waf에서 ip 접근 제어(완료)
-2. alb waf에서 cloudfront header 값 필터링(완료)
