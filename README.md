@@ -1,6 +1,57 @@
 <!--현재 구성은 terraform module에 대한 이해를 하기위한 테스트 구성입니다.-->
+안녕하세요. terraform을 활용한 AWS 인프라 구축 프로젝트입니다.  
+아래는 기본적인 웹 이중화 구성입니다.  
 
-[my notebook setting OK] - 3
+![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/b898b740-4496-4d0d-9a38-b9d9ea2c782a)
+
+
+# 현재 구성에서 terraform 사용
+- 현재 terraform 구성에서 backend는 s3로 사용중이며, s3의 tfstate 파일을 관리하기위하여 dynamoDB의 table 사용.
+- backend를 사용하지 않을 경우 init.tf 파일 주석처리, provider.tf 파일의 backend 설정 주석처리
+
+## terraform으로 환경 및 리소스 생성 작업 순서
+1. terraform 사용하기 위한 디렉토리에 초기화 진행
+```bash
+terraform init
+```
+2. workspace 생성 및 적용
+```bash
+terraform workspace new {workspace name}
+terraform workspace select {workspace name}
+terraform workspace list
+```
+3. tfstate 파일을 관리하기 위한 backend 구성을 위해서 우선 s3와 dynamodb 테이블이 구성되어 있어야됨.
+   - 'provider.tf' 파일에 backend 설정만 주석처리
+4. plan 으로 에러 없이 리소스들이 제대로 생성되는지 체크 후 apply로 생성
+```bash
+terraform plan
+terraform apply
+yes
+```
+5. 모든 리소스 생성 완료 후 terraform backend 적용을 위해서 주석처리했던 backend 설정 주석 제거 후 적용
+```bash
+terraform init
+terraform plan
+terraform apply
+yes
+```
+
+## terraform 구성되어있는 환경을 제거
+1. s3 버킷 안에 tfstate 파일등이 존재하기 때문에 기본적으로 삭제 불가능(s3 리소스 설정에 강제 삭제 옵션 추가필요)
+```bash
+resource "aws_s3_bucket" "terraform_tfstate" {
+  bucket        = "jsp-tfstate"
+  force_destroy = true      #false         <= 해당 설정으로 강제로 삭제 가능함
+}
+```
+2. 모든 리소스 삭제
+```bash
+terraform destroy
+```
+3. 추가로 backend 설정에 s3로 매핑되어있기 때문에 backend 주석처리 및 terraform 디렉토리안에 존재하고있는 tfstate 파일 직접 삭제 조치(terraform 명령을 통해 삭제했어도 기본 terraform 환경에 대한 상태값은 tfstate 값에 남아있음.)
+- 해당 조치가 가장 중요한 이유는 실제로는 삭제되어있으나 terraform에서 s3 backend 설정 값에대한 정보가 남아있기 때문에 s3를 찾을 수 없어서 에러발생하여 새로운 작업 등 명령어가 사용불가능함.
+- tfstate 파일 경로 : {terraform 디렉토리}/terraform.tfstate.d/{workspace}/terraform.tfstate
+=====================================================================
 
 <h1> terraform 모듈 사용하는 방법에 대해서 정리 </h1>
 
@@ -50,53 +101,7 @@ root 모듈에는 크게 4가지 중요 파일이 존재한다.
     ```
 =====================================================================
 
-# 현재 구성에서 terraform 사용
-- 현재 terraform 구성에서 backend는 s3로 사용중이며, s3의 tfstate 파일을 관리하기위하여 dynamoDB의 table 사용.
-- backend를 사용하지 않을 경우 init.tf 파일 주석처리, provider.tf 파일의 backend 설정 주석처리
 
-## terraform으로 환경 및 리소스 생성 작업 순서
-1. terraform 사용하기 위한 디렉토리에 초기화 진행
-```bash
-terraform init
-```
-2. workspace 생성 및 적용
-```bash
-terraform workspace new {workspace name}
-terraform workspace select {workspace name}
-terraform workspace list
-```
-3. tfstate 파일을 관리하기 위한 backend 구성을 위해서 우선 s3와 dynamodb 테이블이 구성되어 있어야됨.
-   - 'provider.tf' 파일에 backend 설정만 주석처리
-4. plan 으로 에러 없이 리소스들이 제대로 생성되는지 체크 후 apply로 생성
-```bash
-terraform plan
-terraform apply
-yes
-```
-5. 모든 리소스 생성 완료 후 terraform backend 적용을 위해서 주석처리했던 backend 설정 주석 제거 후 적용
-```bash
-terraform init
-terraform plan
-terraform apply
-yes
-```
-
-## terraform 구성되어있는 환경을 제거
-1. s3 버킷 안에 tfstate 파일등이 존재하기 때문에 기본적으로 삭제 불가능(s3 리소스 설정에 강제 삭제 옵션 추가필요)
-```bash
-resource "aws_s3_bucket" "terraform_tfstate" {
-  bucket        = "jsp-tfstate"
-  force_destroy = true      #false         <= 해당 설정으로 강제로 삭제 가능함
-}
-```
-2. 모든 리소스 삭제
-```bash
-terraform destroy
-```
-3. 추가로 backend 설정에 s3로 매핑되어있기 때문에 backend 주석처리 및 terraform 디렉토리안에 존재하고있는 tfstate 파일 직접 삭제 조치(terraform 명령을 통해 삭제했어도 기본 terraform 환경에 대한 상태값은 tfstate 값에 남아있음.)
-- 해당 조치가 가장 중요한 이유는 실제로는 삭제되어있으나 terraform에서 s3 backend 설정 값에대한 정보가 남아있기 때문에 s3를 찾을 수 없어서 에러발생하여 새로운 작업 등 명령어가 사용불가능함.
-- tfstate 파일 경로 : {terraform 디렉토리}/terraform.tfstate.d/{workspace}/terraform.tfstate
-=====================================================================
 
 [개인 미션] <!-- 추가해야 될 것들 -->
 [lb_target]

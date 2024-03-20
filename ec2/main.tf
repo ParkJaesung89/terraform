@@ -22,7 +22,6 @@ resource "aws_instance" "public" {
     usermod -aG wheel jsp
     systemctl restart sshd
     yum install -y mysql
-    alias rds='mysql -h jsp-db.cluster-c5mze9lh3g5d.ap-northeast-2.rds.amazonaws.com -u jsp -p'
   EOF
 
   root_block_device {
@@ -34,7 +33,7 @@ resource "aws_instance" "public" {
   tags = merge(
     {
       Name = format(
-        "%s-public-bastion",
+        "%s-public-bastion-backendtest2",
         var.name
       )
     },
@@ -121,12 +120,12 @@ resource "aws_launch_configuration" "jsp_config" {
     systemctl restart sshd
     
     apt update
-    apt install -y nginx mysql
+    apt install -y nginx
     systemctl enable nginx --now
     mkdir /var/www/html/health
     echo "test-page" > /var/www/html/health/index.html
     echo "Nginx installation completed."
-    alias rds='mysql -h jsp-db.cluster-c5mze9lh3g5d.ap-northeast-2.rds.amazonaws.com -u jsp -p'
+    apt install -y mysql
   EOF
 
   root_block_device {

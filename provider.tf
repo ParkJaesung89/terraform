@@ -12,6 +12,7 @@ terraform {
     key             = "terraform/terraform.tfstate"
     region          = "ap-northeast-2"
     profile         = "jaesung.park"                # backend 구성시 추가로 프로파일의 이름을 정의해줘야됨.
+    encrypt         = true
     dynamodb_table  = "terraform-lock"
   }
 
