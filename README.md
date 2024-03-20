@@ -2,7 +2,16 @@
 안녕하세요. terraform을 활용한 AWS 인프라 구축 프로젝트입니다.  
 아래는 기본적인 웹 이중화 구성입니다.  
 
-![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/b898b740-4496-4d0d-9a38-b9d9ea2c782a)
+![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/e38d9f2e-fda8-4a22-a218-4464a6745ff6)
+
+
+# 구성에 대한 흐름
+1) 유저가 www.jsp-tech.com 이라는 도메인으로 접근
+2) CF_WAF(Global)에서 "US, KR" 국가에서만 접근이 가능하며, 특정 IP 등록시 해당 IP들도 차단됨.
+3) Cloudfront로 접근 후 Header에 "jsp-tech" 값 추가하여 LB로 전달
+4) ALB_WAF(Seoul)에서 요청 패킷 Header에 "jsp-tech" 값이 존재하는지 체크하여 있을 경우에만 통과
+5) ALB에서 80포트로 접근 시 443포트로 리다이렉트, 443포트로 접근 시 target group인 web-a, web-c 서버로 forwarding
+6) web 서버안의 nginx 페이지를 loadbalansing(round robin) 하여 보여줌.  
 
 
 # 현재 terraform 코드 활용하여 구성 시 사용방법 및 팁
