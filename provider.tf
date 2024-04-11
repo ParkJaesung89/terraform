@@ -23,7 +23,7 @@ provider "aws" {
   region                   = var.region
   shared_config_files      = ["~/.aws/config"]
   shared_credentials_files = ["~/.aws/credentials"]
-  profile                  = "jaesung.park"
+#  profile                  = "jaesung.park"
 }
 
 # acm module provider for CloudFront
@@ -33,5 +33,5 @@ provider "aws" {
   
   shared_config_files      = ["~/.aws/config"]
   shared_credentials_files = ["~/.aws/credentials"]
-  profile                  = "jaesung.park"
+#  profile                  = "jaesung.park"
 }
