@@ -55,4 +55,5 @@ resource "aws_cloudfront_distribution" "cf_dist" {
     },
     var.tags,
   ) 
+  depends_on = [var.cf_acm_arn]
 }
