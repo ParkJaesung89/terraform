@@ -21,8 +21,8 @@ terraform {
 provider "aws" {
   #global_region            = var.global_region
   region                   = var.region
-  shared_config_files      = ["~/.aws/config"]
-  shared_credentials_files = ["~/.aws/credentials"]
+#  shared_config_files      = ["~/.aws/config"]
+#  shared_credentials_files = ["~/.aws/credentials"]
   profile                  = "jaesung.park"
 }
 
@@ -31,7 +31,7 @@ provider "aws" {
   alias                    = "us-east-1"
   region                   = "us-east-1"
   
-  shared_config_files      = ["~/.aws/config"]
-  shared_credentials_files = ["~/.aws/credentials"]
+#  shared_config_files      = ["~/.aws/config"]
+#  shared_credentials_files = ["~/.aws/credentials"]
   profile                  = "jaesung.park"
 }
