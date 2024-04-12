@@ -3,7 +3,7 @@
 
 # IAM role
 resource "aws_iam_role" "jsp_private" {
-  name = format("%s-private-role", lower(var.name))
+  name = format("%s-private", lower(var.name))
 
   assume_role_policy = <<EOF
 {

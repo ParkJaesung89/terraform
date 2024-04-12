@@ -117,6 +117,8 @@ resource "aws_rds_cluster" "aurora_mysql_db" {
   lifecycle {
     ignore_changes = [master_password, availability_zones]
   }
+
+  depends_on = [aws_rds_cluster_parameter_group.jsp_parameter_group, aws_db_subnet_group.db_subnet_group]
 }
 
 
