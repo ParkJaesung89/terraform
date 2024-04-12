@@ -3,7 +3,7 @@
 
 # IAM role
 resource "aws_iam_role" "jsp_private" {
-  name = format("%s-private", lower(var.name))
+  name = format("%s-private", lower(var.name))		# iam_role name은 이전에 만든 이력이 있으면, 다른 이름
 
   assume_role_policy = <<EOF
 {
