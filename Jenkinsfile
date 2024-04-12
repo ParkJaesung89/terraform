@@ -34,7 +34,7 @@ pipeline {
         
         stage('Pre-Build') {
             steps {
-                  sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text="${TEXT_PRE_BUILD}"' --form 'chat_id="${CHAT_ID}"'"
+                  sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
             }
         }
         stage('Plan') {
@@ -62,7 +62,7 @@ pipeline {
            post {
                 always {
                         script{
-                              sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text="${TEXT_WAITING_BUILD}"' --form 'chat_id="${CHAT_ID}"'"
+                              sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_WAITING_BUILD}' --form chat_id='${CHAT_ID}'"
                         }
                 }
            }
@@ -75,12 +75,12 @@ pipeline {
             post {
                  success {
                          script{
-                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text="${TEXT_SUCCESS_BUILD}"' --form 'chat_id="${CHAT_ID}"'"
+                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
                          }
                  }
                  failure {
                          script{
-                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text="${TEXT_FAILURE_BUILD}"' --form 'chat_id="${CHAT_ID}"'"
+                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
                          }
                  }
             }
