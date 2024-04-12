@@ -133,4 +133,4 @@ root 모듈에는 크게 4가지 중요 파일이 존재한다.
 
 
 github - jenkins - terraform 배포 테스트 진행완료
-telegram notification 설정 중!!!
+telegram notification 설정 중!!!!
