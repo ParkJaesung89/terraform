@@ -74,16 +74,28 @@ pipeline {
             }
             post {
                  success {
-                         script{
+                         script {
                                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
                          }
                  }
                  failure {
-                         script{
+                         script {
                                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
                          }
                  }
             }
         }
+    }
+    post {
+         success {
+                 script {
+                        sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
+                 }
+         }
+         failure {
+                 script {
+                        sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
+                 }
+         }
     }
 }
