@@ -36,8 +36,8 @@ pipeline {
             steps {
 		  script{
                         withCredentials([string(credentialsId: 'telegram-api', variable: 'TOKEN'), string(credentialsId: 'telegram-chatid', variable: 'CHAT_ID')]) {
-                                        //sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
-                                        sh ' curl -s -X POST https://api.telegram.org/bot"$TOKEN"/sendMessage -d chat_id="$CHAT_ID" -d text="$TEXT_PRE_BUILD" '
+                                        sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
+                                        //sh ' curl -s -X POST https://api.telegram.org/bot"$TOKEN"/sendMessage -d chat_id="$CHAT_ID" -d text="$TEXT_PRE_BUILD" '
                         }
                   }
             }
@@ -78,15 +78,13 @@ pipeline {
                 sh "terraform apply --auto-approve"
             }
             post {
-                 success {
-                         script {
-                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
-                         }
-                 }
-                 failure {
-                         script {
-                               sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
-                         }
+                 always {
+                        script{
+                              withCredentials([string(credentialsId: 'telegram-api', variable: 'TOKEN'), string(credentialsId: 'telegram-chatid', variable: 'CHAT_ID')]) {
+                                       sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
+                                       //sh ' curl -s -X POST https://api.telegram.org/bot"$TOKEN"/sendMessage -d chat_id="$CHAT_ID" -d text="$TEXT_PRE_BUILD" '
+                              }
+                        }
                  }
             }
         }
