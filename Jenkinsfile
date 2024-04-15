@@ -34,7 +34,7 @@ pipeline {
         
         stage('Pre-Build') {
             steps {
-                  sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE_BUILD}' --form chat_id='${CHAT_ID}'"
+                  sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
             }
         }
         stage('Plan') {
