@@ -12,8 +12,8 @@ pipeline {
         REGION = credentials('AWS_REGION')
         
         // Telegram configre
-        TOKEN = credentials('telegram-api')
-        CHAT_ID = credentials('telegram-chatid')
+        //TOKEN = credentials('telegram-api')
+        //CHAT_ID = credentials('telegram-chatid')
 
         // Telegram Message Pre Build
         CURRENT_BUILD_NUMBER = "${currentBuild.number}"
@@ -34,7 +34,12 @@ pipeline {
         
         stage('Pre-Build') {
             steps {
-                  sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
+		  script{
+                        withCredentials([string(credentialsId: 'telegram-api', variable: 'TOKEN'), string(credentialsId: 'telegram-chatid', variable: 'CHAT_ID')]) {
+                                        //sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form 'text=${TEXT_PRE_BUILD}' --form 'chat_id=${CHAT_ID}'"
+                                        sh ' curl -s -X POST https://api.telegram.org/bot"$TOKEN"/sendMessage -d chat_id="$CHAT_ID" -d text="$TEXT_PRE_BUILD" '
+                        }
+                  }
             }
         }
         stage('Plan') {
@@ -85,17 +90,5 @@ pipeline {
                  }
             }
         }
-    }
-    post {
-         success {
-                 script {
-                        sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
-                 }
-         }
-         failure {
-                 script {
-                        sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
-                 }
-         }
     }
 }
