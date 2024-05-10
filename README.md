@@ -1,8 +1,8 @@
 <!--현재 구성은 terraform module에 대한 이해를 하기위한 테스트 구성입니다.-->
 안녕하세요. terraform을 활용한 AWS 인프라 구축 프로젝트입니다.  
 
-[구성도]  
-1. Terraform pipeline 구성도
+# [구성도]  
+## Terraform pipeline 구성도
 ![terraform pipeline 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/0697b99a-2bf1-492d-94d5-bfcd0653eb68)
 
 1) github에 소스 배포
@@ -11,7 +11,7 @@
 
 
 
-2. Terraform aws infra 구성도
+## Terraform aws infra 구성도
 ![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/e38d9f2e-fda8-4a22-a218-4464a6745ff6)
 
 
