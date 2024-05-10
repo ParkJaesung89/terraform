@@ -5,6 +5,7 @@
 ## Terraform pipeline 구성도
 ![terraform pipeline 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/0697b99a-2bf1-492d-94d5-bfcd0653eb68)
 
+### 구성도 흐름
 1) github에 소스 배포
 2) jenkins에서 webhook을 통하여 github의 소스 변경을 확인
 3) 변경사항 확인 시 terraform pipeline 동작(jenkinsfile에 동작 작성되있음.)
@@ -15,7 +16,7 @@
 ![terraform 구성도](https://github.com/ParkJaesung89/terraform/assets/42027536/e38d9f2e-fda8-4a22-a218-4464a6745ff6)
 
 
-# 구성에 대한 흐름
+### 구성에 대한 흐름
 1) 유저가 www.jsp-tech.com 이라는 도메인으로 접근
 2) CF_WAF(Global)에서 "US, KR" 국가에서만 접근이 가능하며, 특정 IP 등록시 해당 IP들도 차단됨.
 3) Cloudfront로 접근 후 Header에 "jsp-tech" 값 추가하여 LB로 전달
